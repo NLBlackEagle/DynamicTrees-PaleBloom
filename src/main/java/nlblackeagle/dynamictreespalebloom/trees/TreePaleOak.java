@@ -8,9 +8,6 @@ import com.ferreusveritas.dynamictrees.systems.featuregen.FeatureGenFlareBottom;
 import com.ferreusveritas.dynamictrees.trees.Species;
 import com.ferreusveritas.dynamictrees.trees.TreeFamily;
 import com.sirsquidly.palebloom.init.JTPGBlocks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloom;
 import nlblackeagle.dynamictreespalebloom.trees.FeatureGenCreakingHeart;
 import nlblackeagle.dynamictreespalebloom.ModContent;
@@ -25,13 +22,6 @@ public class TreePaleOak extends TreeFamily {
     public static Block logBlock = JTPGBlocks.PALE_OAK_LOG;
 
     public class SpeciesPaleOak extends Species {
-
-        @Override
-        public boolean isAcceptableSoilForWorldgen(World world, BlockPos pos, IBlockState soilBlockState) {
-            boolean result = super.isAcceptableSoilForWorldgen(world, pos, soilBlockState);
-            System.out.println("[PaleBloomDT DEBUG] isAcceptableSoilForWorldgen at " + pos + " on " + soilBlockState + " = " + result);
-            return result;
-        }
 
         SpeciesPaleOak(TreeFamily treeFamily) {
             super(treeFamily.getName(), treeFamily, ModContent.paleOakLeavesProperties);

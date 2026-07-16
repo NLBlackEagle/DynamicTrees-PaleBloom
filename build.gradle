@@ -12,14 +12,14 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "1.12.2-1.0.0"
-group = "maxhyper.dynamictreesdefiledlands" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "DynamicTreesDefiledLands"
+group = "nlblackeagle.dynamictreespalebloom"
+archivesBaseName = "DynamicTreesPaleBloom"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 
 compileJava {
-    options.compilerArgs += ['-AoutRefMapFile=' + file("$buildDir/classes/java/main/mixins.dynamictreesdefiledlands.refmap.json")]
+    options.compilerArgs += ['-AoutRefMapFile=' + file("$buildDir/resources/main/mixins.dynamictreespalebloom.refmap.json")]
 }
 
 
@@ -36,6 +36,7 @@ repositories {
 }
 
 dependencies {
+    deobfCompile "local:geckolib-forge-1.12.2:3.0.31"
     deobfCompile "local:DynamicTrees-1.12.2:0.9.29"
     deobfCompile "local:palebloom:1.0.0"
     deobfCompile "local:defiledlands-1.12.2:1.4.3"
@@ -66,7 +67,7 @@ processResources {
 jar {
     manifest {
         attributes(
-                'FMLCorePlugin': 'maxhyper.dynamictreesdefiledlands.DynamicTreesPaleBloomPlugin',
+                'FMLCorePlugin': 'nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloomPlugin',
                 'FMLCorePluginContainsFMLMod': 'true',
                 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
                 'ForceLoadAsMod': 'true'

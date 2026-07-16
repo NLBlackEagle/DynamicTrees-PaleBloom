@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "nlblackeagle.dynamictreespalebloom.mixin",
+  "refmap": "mixins.dynamictreespalebloom.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "BlockCreakingHeartMixin",
+    "TileCreakingHeartMixin",
+    "JTPGBiomesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1,
+    "maxShiftBy": 10
+  }
+}

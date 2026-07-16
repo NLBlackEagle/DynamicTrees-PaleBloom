@@ -8,6 +8,7 @@
   "mixins": [
     "BlockCreakingHeartMixin",
     "TileCreakingHeartMixin",
+    "TreeGeneratorDebugMixin",
     "JTPGBiomesMixin"
   ],
   "injectors": {

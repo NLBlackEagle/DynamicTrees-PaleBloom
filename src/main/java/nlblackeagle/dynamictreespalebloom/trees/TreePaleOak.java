@@ -8,10 +8,11 @@ import com.ferreusveritas.dynamictrees.systems.featuregen.FeatureGenFlareBottom;
 import com.ferreusveritas.dynamictrees.trees.Species;
 import com.ferreusveritas.dynamictrees.trees.TreeFamily;
 import com.sirsquidly.palebloom.init.JTPGBlocks;
-import nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloom;
+import nlblackeagle.dynamictreespalebloom.trees.FeatureGenCreakingHeart;
 import nlblackeagle.dynamictreespalebloom.ModContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -25,6 +26,13 @@ public class TreePaleOak extends TreeFamily {
 
     public class SpeciesPaleOak extends Species {
 
+        @Override
+        public boolean isAcceptableSoilForWorldgen(World world, BlockPos pos, IBlockState soilBlockState) {
+            boolean result = super.isAcceptableSoilForWorldgen(world, pos, soilBlockState);
+            System.out.println("[PaleBloomDT DEBUG] isAcceptableSoilForWorldgen at " + pos + " on " + soilBlockState + " = " + result);
+            return result;
+        }
+
         SpeciesPaleOak(TreeFamily treeFamily) {
             super(treeFamily.getName(), treeFamily, ModContent.paleOakLeavesProperties);
 
@@ -35,7 +43,7 @@ public class TreePaleOak extends TreeFamily {
             setupStandardSeedDropping();
 
             addGenFeature(new FeatureGenFlareBottom());
-            addGenFeature(new FeatureGenCreakingHeart(0.01f, 1.0f, 4, 16));
+            addGenFeature(new FeatureGenCreakingHeart(0.01f, 0.10f, 1.0f, 4, 16));
 
             ModContent.paleOakLeavesProperties.setTree(treeFamily);
         }
@@ -45,7 +53,6 @@ public class TreePaleOak extends TreeFamily {
             return true;
         }
     }
-
 
     public TreePaleOak() {
         super(new ResourceLocation(DynamicTreesPaleBloom.MODID, "pale_oak"));
@@ -68,12 +75,6 @@ public class TreePaleOak extends TreeFamily {
 
     protected class BlockBranchPaleOak extends BlockBranchThick {
 
-        // Multiplies the already-radius-scaled base hardness. DT trees fell much
-        // faster than vanilla by default since chopping one point brings the whole
-        // network down at once - this compensates by making each individual hit
-        // meaningfully slower. Tune this number directly to taste.
-        private static final float FELLING_DIFFICULTY_MULTIPLIER = 4.0f;
-
         public BlockBranchPaleOak(String name) {
             this(Material.WOOD, name);
         }
@@ -88,11 +89,6 @@ public class TreePaleOak extends TreeFamily {
 
         protected BlockBranchPaleOak(Material material, String name, boolean extended) {
             super(material, name, extended);
-        }
-
-        @Override
-        public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
-            return super.getBlockHardness(blockState, world, pos) * FELLING_DIFFICULTY_MULTIPLIER;
         }
     }
 

@@ -15,6 +15,7 @@ import com.sirsquidly.palebloom.init.JTPGBlocks;
 import nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloom;
 import nlblackeagle.dynamictreespalebloom.trees.FeatureGenCreakingHeart;
 import nlblackeagle.dynamictreespalebloom.ModContent;
+import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -43,8 +44,12 @@ public class TreePaleOak extends TreeFamily {
             addGenFeature(new FeatureGenClearVolume(6));      // Clear a spot for the thick trunk
             addGenFeature(new FeatureGenFlareBottom());       // Flare the bottom
             addGenFeature(new FeatureGenMound(5));            // Root mound + fixes overhanging trunks near drop-offs
-            addGenFeature(new FeatureGenCreakingHeart(0.01f, 0.10f, 1.0f, 4, 16));
-            addGenFeature(new FeatureGenHangingMoss(0.075f)); // Worldgen-only, per-leaf chance
+            addGenFeature(new FeatureGenCreakingHeart(
+                    (float) ForgeConfigHandler.paleOak.creakingHeartGrowthChance,
+                    (float) ForgeConfigHandler.paleOak.creakingHeartWorldgenChance,
+                    ForgeConfigHandler.paleOak.creakingHeartMinTrunkRadius,
+                    16));
+            addGenFeature(new FeatureGenHangingMoss((float) ForgeConfigHandler.paleOak.hangingMossChance)); // Worldgen-only, per-leaf chance
             addGenFeature(new FeatureGenRoots(13).setScaler(getRootScaler())); // Surface roots, added last like Dark Oak
 
             ModContent.paleOakLeavesProperties.setTree(treeFamily);

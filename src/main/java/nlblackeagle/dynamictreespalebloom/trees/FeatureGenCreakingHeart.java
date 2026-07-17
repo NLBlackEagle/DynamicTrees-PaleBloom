@@ -14,20 +14,17 @@ import nlblackeagle.dynamictreespalebloom.ModContent;
 import nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart;
 
 import java.util.List;
-import java.util.Random;
 
 public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeature {
 
     private final float chance;
     private final float genChance;
-    private final float naturalChance;
     private final int minTrunkRadius;
     private final int searchHeight;
 
-    public FeatureGenCreakingHeart(float chance, float genChance, float naturalChance, int minTrunkRadius, int searchHeight) {
+    public FeatureGenCreakingHeart(float chance, float genChance, int minTrunkRadius, int searchHeight) {
         this.chance = chance;
         this.genChance = genChance;
-        this.naturalChance = naturalChance;
         this.minTrunkRadius = minTrunkRadius;
         this.searchHeight = searchHeight;
     }
@@ -36,7 +33,9 @@ public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeatur
     public boolean postGrow(World world, BlockPos rootPos, BlockPos treePos, Species species, int soilLife, boolean natural) {
         if (world.isRemote) return false;
         if (world.rand.nextFloat() >= chance) return false;
-        return tryPlaceHeart(world, treePos, world.rand);
+        // Reached via planting/growth (hand-planted or self-seeded), never
+        // raw worldgen placement - so this is never a "natural" heart.
+        return tryPlaceHeart(world, treePos, false);
     }
 
     @Override
@@ -45,16 +44,16 @@ public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeatur
         if (world.rand.nextFloat() >= genChance) return false;
         // Worldgen trees are placed fully-grown in one pass, so the trunk is
         // already complete by the time this runs - safe to search immediately.
-        return tryPlaceHeart(world, rootPos.up(), world.rand);
+        // This path only ever fires for actual worldgen-generated trees, so
+        // the heart is always genuinely "natural" here.
+        return tryPlaceHeart(world, rootPos.up(), true);
     }
 
-    private boolean tryPlaceHeart(World world, BlockPos treePos, Random rand) {
+    private boolean tryPlaceHeart(World world, BlockPos treePos, boolean isNatural) {
         if (findExistingHeart(world, treePos)) return false;
 
         BlockPos heartPos = findValidHeartPosition(world, treePos);
         if (heartPos == null) return false;
-
-        boolean isNatural = rand.nextFloat() < naturalChance;
 
         int matchedRadius = TreeHelper.getRadius(world, heartPos);
 

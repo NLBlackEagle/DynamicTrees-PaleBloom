@@ -69,6 +69,16 @@ public class BlockBranchCreakingHeart extends BlockBranchBasic implements net.mi
     }
 
     @Override
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, java.util.Random rand) {
+        if (rand.nextInt(16) == 0 && stateIn.getValue(BlockCreakingHeart.HEART_STATE) != BlockCreakingHeart.EnumHeartState.UPROOTED
+                && WorldPaleGarden.isNight(worldIn)) {
+            worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
+                    com.sirsquidly.palebloom.init.JTPGSounds.BLOCK_CREAKING_HEART_AMBIENT,
+                    net.minecraft.util.SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+        }
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
         IProperty[] listedProperties = {RADIUS, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL};
         return new ExtendedBlockState(this, listedProperties, CONNECTIONS);

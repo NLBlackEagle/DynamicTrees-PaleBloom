@@ -44,6 +44,7 @@ public class TreePaleOak extends TreeFamily {
             addGenFeature(new FeatureGenFlareBottom());       // Flare the bottom
             addGenFeature(new FeatureGenMound(5));            // Root mound + fixes overhanging trunks near drop-offs
             addGenFeature(new FeatureGenCreakingHeart(0.01f, 0.10f, 1.0f, 4, 16));
+            addGenFeature(new FeatureGenHangingMoss(0.075f)); // Worldgen-only, per-leaf chance
             addGenFeature(new FeatureGenRoots(13).setScaler(getRootScaler())); // Surface roots, added last like Dark Oak
 
             ModContent.paleOakLeavesProperties.setTree(treeFamily);

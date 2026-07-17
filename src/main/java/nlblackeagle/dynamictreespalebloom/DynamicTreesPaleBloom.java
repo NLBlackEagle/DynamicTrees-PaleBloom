@@ -40,3 +40,14 @@ public class  DynamicTreesPaleBloom {
 	}
 	
 }
+
+//todo: Check sounds of the mod, they should work for the DT compat too.
+//todo: make sure the trees drop the correct items.
+//todo: create a config and expose the rarity at which creaking hearts generate in pale trees
+//todo: add hanging moss to the trees
+//todo: make pale-oak trees only have creaking hearts if grown naturally.
+//todo: add blossoming pale-oak trees and make them appear older, thicker roots and bigger.
+// also make them have a rare chance of generating a creaking-heart, like 10% again and make
+// it a config as well.
+//todo: Add the Peeping Birch (Eye-full Birch variant. Generates taller,
+// with occasional cut-off stumps where branches would've been at)

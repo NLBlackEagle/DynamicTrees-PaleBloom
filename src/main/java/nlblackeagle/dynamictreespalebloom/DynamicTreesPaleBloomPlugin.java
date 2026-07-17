@@ -12,6 +12,7 @@ public class DynamicTreesPaleBloomPlugin implements IFMLLoadingPlugin {
     public DynamicTreesPaleBloomPlugin() {
         MixinBootstrap.init();
         FermiumRegistryAPI.enqueueMixin(true, "mixins.dynamictreespalebloom.palebloom.json");
+        FermiumRegistryAPI.enqueueMixin(false, "mixins.dynamictreespalebloom.vanilla.json");
     }
 
     public String[] getASMTransformerClass() { return new String[0]; }

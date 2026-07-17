@@ -6,10 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "BlockCreakingHeartMixin",
-    "TileCreakingHeartMixin",
-    "JTPGBiomesMixin",
-    "BlockPaleHangingMossMixin"
+    "BlockLeavesMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

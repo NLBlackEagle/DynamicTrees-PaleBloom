@@ -76,8 +76,13 @@ public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeatur
     }
 
     private BlockPos findValidHeartPosition(World world, BlockPos treePos) {
-        int startHeight = Math.max(2, searchHeight / 2);
-        for (int y = startHeight; y < searchHeight; y++) {
+        // Search the lower half of the trunk, not the upper half - DT trunks
+        // taper as they get taller, so the upper portion is naturally
+        // thinner regardless of the trunk's real thick base. Searching low
+        // (just above the flared base) means the heart lands somewhere
+        // genuinely thick, matching the trunk's actual visual bulk.
+        int endHeight = Math.max(3, searchHeight / 2);
+        for (int y = 2; y < endHeight; y++) {
             BlockPos candidate = treePos.up(y);
 
             if (!TreeHelper.isBranch(world.getBlockState(candidate))) continue;

@@ -66,12 +66,17 @@ public class BlockBranchCreakingHeart extends BlockBranchThick implements net.mi
 
     @SideOnly(Side.CLIENT)
     public static void registerStateMapper(Block block) {
-        // Visually identical to a normal trunk segment at all times - state is
-        // still tracked functionally (HEART_STATE/NATURAL), just never affects
-        // which model gets rendered. Discovery happens via the hit-particle
-        // effect below instead of a distinct appearance.
+        // Texture-wise, visually identical to a normal trunk segment
+        // regardless of day/night state (HEART_STATE/NATURAL ignored) -
+        // discovery happens via the hit-particle effect instead of a
+        // distinct appearance. RADIUSNYBBLE must NOT be ignored here, unlike
+        // those two - ignoring it caused Forge's model baker to only ever
+        // bake one shared (thin, default-radius) geometry for the whole
+        // block regardless of its actual live radius, even though the
+        // block's underlying data was always correct. A normal trunk branch
+        // never ignores its own radius property for exactly this reason.
         ModelLoader.setCustomStateMapper(block, new net.minecraft.client.renderer.block.statemap.StateMap.Builder()
-                .ignore(RADIUSNYBBLE, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL)
+                .ignore(BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL)
                 .build());
     }
 

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // DT's own BranchDestructionData can't preserve our custom NATURAL property
 // through its encode/decode round-trip anyway (it only reconstructs a
 // generic state via radius+connections). So instead of trying to hook DT's
-// internal machinery, this scans a generous bounding box around the cut
+// internal machinery, this scans a cheap vertical line above/below the cut
 // point BEFORE any destruction happens (while the real blocks, with their
 // real NATURAL flag, are still intact), and drops the bonus item ourselves
 // if a natural heart is found - independent of DT's own drop list entirely.
@@ -55,14 +55,16 @@ public class BlockBranchFellingMixin {
                     && block == ((com.ferreusveritas.dynamictrees.blocks.BlockBranchThick) ModContent.paleBloomingOakBranchBlock).otherBlock);
     }
 
-    // Generous bounding box covering the tallest/widest of our species
-    // (Blooming Pale Oak: height ~25, radius up to 24) - approximate, not a
-    // true network trace, so there's a small chance of a false positive if
-    // two trees are growing extremely close together, or a false negative
-    // on an unusually tall/sprawling outlier. Accepted trade-off given a
-    // real network trace would require reimplementing DT's own traversal.
+    // We control the heart's placement logic ourselves (FeatureGenCreakingHeart
+    // always embeds it directly in the trunk column, 8-15 blocks above the
+    // tree's base, never offset horizontally) - so instead of a wide 3D
+    // search, just scan a vertical line straight up/down from the cut point.
+    // A few blocks of downward buffer accounts for the player not
+    // necessarily chopping exactly at the tree's true base. This drops the
+    // scan from ~13,000 positions down to about 24.
     private BlockPos findNaturalHeartNearby(World world, BlockPos cutPos) {
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(cutPos.add(-16, -8, -16), cutPos.add(16, 28, 16))) {
+        for (int y = -3; y <= 20; y++) {
+            BlockPos pos = cutPos.up(y);
             Block block = world.getBlockState(pos).getBlock();
             if (block == ModContent.paleOakBranchCreakingHeart || block == ModContent.paleOakBranchCreakingHeartX
                     || block == ModContent.paleBloomingOakBranchCreakingHeart || block == ModContent.paleBloomingOakBranchCreakingHeartX) {

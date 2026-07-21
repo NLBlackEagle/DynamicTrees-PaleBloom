@@ -41,7 +41,24 @@ public class  DynamicTreesPaleBloom {
 	
 }
 
+
 //todo: Check sounds of the mod, they should work for the DT compat too.
-//todo: make sure the trees drop the correct items.
-//todo: make pale-oak trees only have creaking hearts if grown naturally.
+//todo: Incense thorns drop their item twice, should be once.
+
+//todo: RLCraft Dregora Section in Config and add:
+//todo: make DT spawn underground and see what else requires skylight cuz we need
+// to overwrite that with a setting "EnableUndergroundGrowth"
+//todo: Reaping Willow always aggressive towards players and spawns naturally
+// underground
+
+//todo: Talk with others on what to do with: (With the team and I guess here too)
+// Pollenhead, natural growth? Make it always spew stuff around from a "Natural growth resin bulb" that has unlimited resin in it but when harvested poofs into a cloud of particles (unless harvested with a gardencrafted hoe perhaps? (nice progression)
+// Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
+// NightLight, natural growth, gives off light can hang from cave ceilings?
+
+//todo: Maybe add a new potion effect called or "Pale Lung" acting the same as poison and on death it acts as a seed bomb and then replace the incense thorns and pollenhead poison effects for the "Pale Lung" effect
+//todo: Disable mannequins, reaping willow saplings, creaking heart
+//todo: weird root comes from sucker nodule tree, make this apparent
+//todo: make Reaping Willow explode as a seed bomb on death and make it place
+// a pollenhead
 

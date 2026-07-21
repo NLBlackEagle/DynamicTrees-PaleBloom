@@ -8,8 +8,8 @@
   "variants": {
     "tree": {
       "0": {"textures": { "all": "palebloom:blocks/pale_oak_leaves" }},
-      "1": {},
-      "2": {},
+      "1": {"textures": { "all": "palebloom:blocks/blooming_pale_oak_leaves" }},
+      "2": {"textures": { "all": "palebloom:blocks/peeping_birch_leaves" }},
       "3": {}
     },
     "hydro": {

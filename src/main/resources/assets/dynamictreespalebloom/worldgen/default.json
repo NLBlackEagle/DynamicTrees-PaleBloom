@@ -4,11 +4,13 @@
     "apply" : {
       "species" : {
         "random" : {
-          "dynamictreespalebloom:pale_oak" : 9,
-          "dynamictrees:darkoak" : 1
+          "dynamictreespalebloom:pale_oak" : 75,
+          "dynamictrees:darkoak" : 10,
+          "dynamictreespalebloom:pale_blooming" : 0,
+          "dynamictreespalebloom:pale_birch" : 15
         }
       },
-      "density" : [ 0.9 ],
+      "density" : [ 0.8 ],
       "chance" : 1
     }
   }

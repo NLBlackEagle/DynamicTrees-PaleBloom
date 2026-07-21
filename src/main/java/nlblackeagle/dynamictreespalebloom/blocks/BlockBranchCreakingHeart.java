@@ -1,6 +1,6 @@
 package nlblackeagle.dynamictreespalebloom.blocks;
 
-import com.ferreusveritas.dynamictrees.blocks.BlockBranchBasic;
+import com.ferreusveritas.dynamictrees.blocks.BlockBranchThick;
 import com.sirsquidly.palebloom.common.blocks.BlockCreakingHeart;
 import com.sirsquidly.palebloom.common.blocks.tileentity.TileCreakingHeart;
 import com.sirsquidly.palebloom.config.ConfigCache;
@@ -11,13 +11,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -27,21 +25,43 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
-public class BlockBranchCreakingHeart extends BlockBranchBasic implements net.minecraft.block.ITileEntityProvider {
+// Now extends BlockBranchThick (was BlockBranchBasic) - a Basic branch caps
+// its radius at RADMAX_NORMAL (8), which reads visibly thin embedded in a
+// genuinely thick trunk section (Blooming Pale Oak can reach well past 8).
+// Extending Thick unlocks the full RADMAX_THICK (24) range, same as the
+// actual trunk, requiring the same otherBlock self-pairing constructor
+// pattern already used for BlockBranchPaleOak/BlockBranchBloomingPaleOak.
+public class BlockBranchCreakingHeart extends BlockBranchThick implements net.minecraft.block.ITileEntityProvider {
 
     public BlockBranchCreakingHeart(String name) {
-        super(Material.WOOD, name);
+        this(Material.WOOD, name);
+    }
+
+    public BlockBranchCreakingHeart(Material material, String name) {
+        super(material, name, false);
+        otherBlock = new BlockBranchCreakingHeart(material, name + "x", true);
+        otherBlock.otherBlock = this;
+
+        cacheBranchThickStates();
         setHardness(3.0F); // matches BlockCreakingHeart-ish wood hardness
     }
 
+    protected BlockBranchCreakingHeart(Material material, String name, boolean extended) {
+        super(material, name, extended);
+        setHardness(3.0F);
+    }
+
     // Lets callers outside this package (FeatureGenCreakingHeart) set the radius
-    // property without needing direct access to the protected RADIUS field.
+    // without needing direct access to the protected RADIUSNYBBLE field. Uses
+    // the exact inverse of BlockBranchThick.getRadius()'s own encoding formula:
+    // effective radius = nybble + (extended ? 17 : 1), clamped 1-24.
     public static IBlockState withRadius(IBlockState state, int radius) {
-        return state.withProperty(RADIUS, MathHelper.clamp(radius, 1, RADMAX_NORMAL));
+        BlockBranchCreakingHeart block = (BlockBranchCreakingHeart) state.getBlock();
+        int clampedRadius = MathHelper.clamp(radius, 1, RADMAX_THICK);
+        int nybble = MathHelper.clamp(clampedRadius - (block.extended ? 17 : 1), 0, 15);
+        return state.withProperty(RADIUSNYBBLE, nybble);
     }
 
     @SideOnly(Side.CLIENT)
@@ -51,7 +71,7 @@ public class BlockBranchCreakingHeart extends BlockBranchBasic implements net.mi
         // which model gets rendered. Discovery happens via the hit-particle
         // effect below instead of a distinct appearance.
         ModelLoader.setCustomStateMapper(block, new net.minecraft.client.renderer.block.statemap.StateMap.Builder()
-                .ignore(RADIUS, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL)
+                .ignore(RADIUSNYBBLE, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL)
                 .build());
     }
 
@@ -80,7 +100,12 @@ public class BlockBranchCreakingHeart extends BlockBranchBasic implements net.mi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        IProperty[] listedProperties = {RADIUS, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL};
+        // BlockBranchThick's own createBlockState uses RADIUSNYBBLE (0-15),
+        // not RADIUS (1-24) from BlockBranchBasic - our earlier version
+        // replaced DT's real property list instead of extending it, dropping
+        // RADIUSNYBBLE entirely and crashing the moment getRadius() tried to
+        // read it during the "x" companion's own construction.
+        IProperty[] listedProperties = {RADIUSNYBBLE, BlockCreakingHeart.HEART_STATE, BlockCreakingHeart.NATURAL};
         return new ExtendedBlockState(this, listedProperties, CONNECTIONS);
     }
 

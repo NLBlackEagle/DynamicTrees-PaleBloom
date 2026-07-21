@@ -1,0 +1,7 @@
+{   "parent": "dynamictrees:block/sapling",
+  "textures": {
+    "particle": "palebloom:blocks/peeping_birch_sapling",
+    "log": "palebloom:blocks/peeping_birch_log",
+    "leaves": "palebloom:blocks/peeping_birch_leaves"
+  }
+}

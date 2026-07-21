@@ -1,0 +1,7 @@
+{
+	"parent": "dynamictrees:block/smartmodel/branch",
+	"textures": {
+		"bark": "palebloom:blocks/peeping_birch_log",
+		"rings": "palebloom:blocks/peeping_birch_log_top"
+	}
+}

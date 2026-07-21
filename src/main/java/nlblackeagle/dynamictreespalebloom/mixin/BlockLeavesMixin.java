@@ -31,15 +31,32 @@ public class BlockLeavesMixin {
 
         if (!self.getClass().getName().equals("com.ferreusveritas.dynamictrees.blocks.BlockDynamicLeaves")) return;
 
+        int leafType;
+        int spawnChance;
+
         try {
             Method getProperties = self.getClass().getMethod("getProperties", IBlockState.class);
             Object properties = getProperties.invoke(self, stateIn);
-            if (properties != ModContent.paleOakLeavesProperties) return;
+
+            // Matches the real leafType/spawnChance values from each species'
+            // actual BlockPaleLeaves constructor in Pale Bloom itself.
+            if (properties == ModContent.paleOakLeavesProperties) {
+                leafType = 0;
+                spawnChance = 64;
+            } else if (properties == ModContent.paleBloomingOakLeavesProperties) {
+                leafType = 1;
+                spawnChance = 64;
+            } else if (properties == ModContent.paleBirchLeavesProperties) {
+                leafType = 2;
+                spawnChance = 128;
+            } else {
+                return;
+            }
         } catch (ReflectiveOperationException e) {
             return;
         }
 
-        if (rand.nextInt(64) == 0 && !worldIn.getBlockState(pos.down()).getMaterial().blocksMovement()) {
+        if (rand.nextInt(spawnChance) == 0 && !worldIn.getBlockState(pos.down()).getMaterial().blocksMovement()) {
             try {
                 Class<?> paleBloomClass = Class.forName("com.sirsquidly.palebloom.paleBloom");
                 Field proxyField = paleBloomClass.getField("proxy");
@@ -51,7 +68,7 @@ public class BlockLeavesMixin {
 
                 spawnParticle.invoke(proxy, 1, worldIn,
                         pos.getX() + 0.5 + (worldIn.rand.nextDouble() - 0.5), (double) pos.getY(),
-                        pos.getZ() + 0.5 + (worldIn.rand.nextDouble() - 0.5), 0.0, 0.0, 0.0, new int[]{0});
+                        pos.getZ() + 0.5 + (worldIn.rand.nextDouble() - 0.5), 0.0, 0.0, 0.0, new int[]{leafType});
             } catch (ReflectiveOperationException ignored) {
             }
         }

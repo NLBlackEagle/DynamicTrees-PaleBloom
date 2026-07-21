@@ -9,7 +9,8 @@
     "BlockCreakingHeartMixin",
     "TileCreakingHeartMixin",
     "JTPGBiomesMixin",
-    "BlockPaleHangingMossMixin"
+    "BlockPaleHangingMossMixin",
+    "BlockBranchFellingMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

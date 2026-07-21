@@ -1,6 +1,14 @@
 item.dynamictreespalebloom:pale_oakseed.name=Pale Oak Seed
+item.dynamictreespalebloom:pale_bloomingseed.name=Blooming Pale Oak Seed
+item.dynamictreespalebloom:pale_birchseed.name=Peeping Birch Seed
 
 species.dynamictreespalebloom:pale_oak.name=Pale Oak
+species.dynamictreespalebloom:pale_blooming.name=Blooming Pale Oak
+species.dynamictreespalebloom:pale_birch.name=Peeping Birch
 
 tile.pale_oakbranch.name=Pale Oak Tree
 tile.pale_oak_creaking_heart.name=Creaking Heart
+tile.pale_bloomingbranch.name=Blooming Pale Oak Tree
+tile.pale_blooming_creaking_heart.name=Creaking Heart
+tile.pale_birchbranch.name=Peeping Birch Tree
+tile.palebloom.peeping_birch_leaves.name=Peeping Birch Leaves

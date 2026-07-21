@@ -13,6 +13,7 @@ import com.ferreusveritas.dynamictrees.items.DendroPotion.DendroPotionType;
 import com.ferreusveritas.dynamictrees.systems.DirtHelper;
 import com.ferreusveritas.dynamictrees.trees.Species;
 import com.ferreusveritas.dynamictrees.trees.TreeFamily;
+import com.sirsquidly.palebloom.common.blocks.base.BlockJTPGSapling;
 import com.sirsquidly.palebloom.init.JTPGBlocks;
 import net.minecraft.item.ItemBlock;
 import nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart;
@@ -46,6 +47,13 @@ public class ModContent {
     public static ILeavesProperties paleOakLeavesProperties;
     public static Block paleOakBranchBlock;
     public static Block paleOakBranchCreakingHeart;
+    public static Block paleOakBranchCreakingHeartX;
+    public static ILeavesProperties paleBloomingOakLeavesProperties;
+    public static Block paleBloomingOakBranchBlock;
+    public static Block paleBloomingOakBranchCreakingHeart;
+    public static Block paleBloomingOakBranchCreakingHeartX;
+    public static ILeavesProperties paleBirchLeavesProperties;
+    public static Block paleBirchBranchBlock;
     public static ArrayList<TreeFamily> trees = new ArrayList<TreeFamily>();
 
     @SubscribeEvent
@@ -73,6 +81,28 @@ public class ModContent {
 
         LeavesPaging.getLeavesBlockForSequence(DynamicTreesPaleBloom.MODID, 0, paleOakLeavesProperties);
 
+        paleBloomingOakLeavesProperties = new LeavesProperties(
+                JTPGBlocks.BLOOMING_PALE_OAK_LEAVES.getDefaultState(),
+                TreeRegistry.findCellKit("dynamictrees:deciduous")) {
+            @Override
+            public ItemStack getPrimitiveLeavesItemStack() {
+                return new ItemStack(JTPGBlocks.BLOOMING_PALE_OAK_LEAVES);
+            }
+        };
+
+        LeavesPaging.getLeavesBlockForSequence(DynamicTreesPaleBloom.MODID, 1, paleBloomingOakLeavesProperties);
+
+        paleBirchLeavesProperties = new LeavesProperties(
+                JTPGBlocks.PEEPING_BIRCH_LEAVES.getDefaultState(),
+                TreeRegistry.findCellKit("dynamictrees:deciduous")) {
+            @Override
+            public ItemStack getPrimitiveLeavesItemStack() {
+                return new ItemStack(JTPGBlocks.PEEPING_BIRCH_LEAVES);
+            }
+        };
+
+        LeavesPaging.getLeavesBlockForSequence(DynamicTreesPaleBloom.MODID, 2, paleBirchLeavesProperties);
+
         TreeFamily paleOak = new TreePaleOak();
         paleOakBranchBlock = paleOak.getDynamicBranch();
 
@@ -81,8 +111,24 @@ public class ModContent {
         paleOak.addValidBranches(creakingHeartBranch);
         paleOakBranchCreakingHeart = creakingHeartBranch;
         registry.register(paleOakBranchCreakingHeart);
+        paleOakBranchCreakingHeartX = creakingHeartBranch.otherBlock;
+        registry.register(paleOakBranchCreakingHeartX);
 
-        Collections.addAll(trees, paleOak);
+        TreeFamily paleBloomingOak = new nlblackeagle.dynamictreespalebloom.trees.TreeBloomingPaleOak();
+        paleBloomingOakBranchBlock = paleBloomingOak.getDynamicBranch();
+
+        BlockBranchCreakingHeart bloomingCreakingHeartBranch = new BlockBranchCreakingHeart("pale_blooming_creaking_heart");
+        bloomingCreakingHeartBranch.setFamily(paleBloomingOak);
+        paleBloomingOak.addValidBranches(bloomingCreakingHeartBranch);
+        paleBloomingOakBranchCreakingHeart = bloomingCreakingHeartBranch;
+        registry.register(paleBloomingOakBranchCreakingHeart);
+        paleBloomingOakBranchCreakingHeartX = bloomingCreakingHeartBranch.otherBlock;
+        registry.register(paleBloomingOakBranchCreakingHeartX);
+
+        TreeFamily paleBirch = new nlblackeagle.dynamictreespalebloom.trees.TreePaleBirch();
+        paleBirchBranchBlock = paleBirch.getDynamicBranch();
+
+        Collections.addAll(trees, paleOak, paleBloomingOak, paleBirch);
 
         trees.forEach(tree -> tree.registerSpecies(Species.REGISTRY));
         ArrayList<Block> treeBlocks = new ArrayList<>();
@@ -99,10 +145,16 @@ public class ModContent {
         trees.forEach(tree -> tree.getRegisterableItems(treeItems));
         registry.registerAll(treeItems.toArray(new Item[0]));
         registry.register(new ItemBlock(paleOakBranchCreakingHeart).setRegistryName(paleOakBranchCreakingHeart.getRegistryName()));
+        registry.register(new ItemBlock(paleOakBranchCreakingHeartX).setRegistryName(paleOakBranchCreakingHeartX.getRegistryName()));
+        registry.register(new ItemBlock(paleBloomingOakBranchCreakingHeart).setRegistryName(paleBloomingOakBranchCreakingHeart.getRegistryName()));
+        registry.register(new ItemBlock(paleBloomingOakBranchCreakingHeartX).setRegistryName(paleBloomingOakBranchCreakingHeartX.getRegistryName()));
     }
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        setUpSeedRecipes("pale_oak", new ItemStack(JTPGBlocks.PALE_SAPLING, 1, BlockJTPGSapling.EnumType.PALE_OAK.getMetadata()));
+        setUpSeedRecipes("pale_blooming", new ItemStack(JTPGBlocks.PALE_SAPLING, 1, BlockJTPGSapling.EnumType.BLOOMING_PALE_OAK.getMetadata()));
+        setUpSeedRecipes("pale_birch", new ItemStack(JTPGBlocks.PALE_SAPLING, 1, BlockJTPGSapling.EnumType.PEEPING_BIRCH.getMetadata()));
     }
 
     public static void setUpSeedRecipes(String name, ItemStack treeSapling) {
@@ -127,5 +179,12 @@ public class ModContent {
 
         nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart.registerStateMapper(paleOakBranchCreakingHeart);
         ModelHelper.regModel(net.minecraft.item.Item.getItemFromBlock(paleOakBranchCreakingHeart));
+        nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart.registerStateMapper(paleOakBranchCreakingHeartX);
+        ModelHelper.regModel(net.minecraft.item.Item.getItemFromBlock(paleOakBranchCreakingHeartX));
+
+        nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart.registerStateMapper(paleBloomingOakBranchCreakingHeart);
+        ModelHelper.regModel(net.minecraft.item.Item.getItemFromBlock(paleBloomingOakBranchCreakingHeart));
+        nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart.registerStateMapper(paleBloomingOakBranchCreakingHeartX);
+        ModelHelper.regModel(net.minecraft.item.Item.getItemFromBlock(paleBloomingOakBranchCreakingHeartX));
     }
 }

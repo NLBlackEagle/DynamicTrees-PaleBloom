@@ -81,6 +81,31 @@ public class ForgeConfigHandler {
         public double palePumpkinChance = 1.0;
     }
 
+    @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience. Off by default - other packs using this addon should have to opt in.")
+    @Config.Name("RLCraft Dregora Options")
+    public static final RLCraftDregoraConfig rlcraftDregora = new RLCraftDregoraConfig();
+
+    public static class RLCraftDregoraConfig {
+
+        @Config.Comment("When set to true, disables all items in-game listed in the item blacklist.")
+        @Config.Name("Enable the item blacklist")
+        public boolean enableItemBlacklist = false;
+
+        @Config.Comment("Real Pale Bloom items/blocks to remove entirely, using their real registry names (modid:name). Add more here as needed.")
+        @Config.Name("Item Blacklist")
+        public String[] itemBlacklist = {
+                "palebloom:mannequin",
+                "palebloom:creaking_heart",
+                "palebloom:reaping_willow_sapling",
+                "palebloom:seed_bomb",
+                "palebloom:pale_moss_cloak"
+        };
+
+        @Config.Comment("Fixes a real Pale Bloom bug: harvesting Incense Thorns drops the item twice (once from its own manual NBT-preserving drop, once from the default drop path underneath it). True = only drop once.")
+        @Config.Name("Fix Incense Thorns Double Drop")
+        public boolean fixIncenseThornsDoubleDrop = true;
+    }
+
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)
     public static class EventHandler {
 

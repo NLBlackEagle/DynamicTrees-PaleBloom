@@ -50,9 +50,10 @@ public class  DynamicTreesPaleBloom {
 // Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
 // NightLight, natural growth, gives off light can hang from cave ceilings?
 
-//todo: Maybe add a new potion effect called or "Pale Lung" acting the same as poison and on death it acts as a seed bomb and then replace the incense thorns and pollenhead poison effects for the "Pale Lung" effect
-//todo: Disable mannequins, reaping willow saplings, creaking heart
+//todo: Maybe add a new potion effect called or "Pale Lung" acting the same as
+// poison and on death it acts as a seed bomb and then replace the incense
+// thorns and pollenhead poison effects for the "Pale Lung" effect
+
 //todo: weird root comes from sucker nodule tree, make this apparent
-//todo: make Reaping Willow explode as a seed bomb on death and make it place
-// a pollenhead
+
 

@@ -144,6 +144,10 @@ public class ForgeConfigHandler {
         @Config.Comment("Maximum light level for Reaping Willow to spawn")
         @Config.Name("Reaping Willow Max Light Level")
         public int reapingWillowMaxLightLevel = 15;
+
+        @Config.Comment("On death, Reaping Willow explodes like a real Seed Bomb (spreads Pale Moss, applies Wither to nearby non-pale creatures, converts nearby Creepers to Pale Creepers - no block destruction) and places a Pollenhead at the death location.")
+        @Config.Name("Reaping Willow Explodes On Death")
+        public boolean reapingWillowExplodeOnDeath = false;
     }
 
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)

@@ -43,11 +43,8 @@ public class  DynamicTreesPaleBloom {
 
 
 //todo: Check sounds of the mod, they should work for the DT compat too.
-//todo: Incense thorns drop their item twice, should be once.
 
-//todo: RLCraft Dregora Section in Config and add:
-//todo: make DT spawn underground and see what else requires skylight cuz we need
-// to overwrite that with a setting "EnableUndergroundGrowth"
+
 //todo: Reaping Willow always aggressive towards players and spawns naturally
 // underground
 

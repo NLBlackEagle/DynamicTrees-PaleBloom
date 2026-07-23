@@ -104,6 +104,10 @@ public class ForgeConfigHandler {
         @Config.Comment("Fixes a real Pale Bloom bug: harvesting Incense Thorns drops the item twice (once from its own manual NBT-preserving drop, once from the default drop path underneath it). True = only drop once.")
         @Config.Name("Fix Incense Thorns Double Drop")
         public boolean fixIncenseThornsDoubleDrop = true;
+
+        @Config.Comment("Allows Dynamic Trees to plant and grow fully underground, bypassing DT's own skylight requirements (both the initial seed-planting check and the ongoing leaf-survival check). Affects this addon's own Pale Bloom saplings/trees and vanilla Dark Oak specifically, not every Dynamic Trees species.")
+        @Config.Name("Enable Underground Growth")
+        public boolean enableUndergroundGrowth = false;
     }
 
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)

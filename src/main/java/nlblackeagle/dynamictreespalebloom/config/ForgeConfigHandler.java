@@ -108,6 +108,42 @@ public class ForgeConfigHandler {
         @Config.Comment("Allows Dynamic Trees to plant and grow fully underground, bypassing DT's own skylight requirements (both the initial seed-planting check and the ongoing leaf-survival check). Affects this addon's own Pale Bloom saplings/trees and vanilla Dark Oak specifically, not every Dynamic Trees species.")
         @Config.Name("Enable Underground Growth")
         public boolean enableUndergroundGrowth = false;
+
+        @Config.Comment("Makes Reaping Willow always aggressive toward players on sight. It currently has no ability to spontaneously target a player at all (only retaliates if attacked first) - this adds that.")
+        @Config.Name("Reaping Willow Always Aggressive")
+        public boolean reapingWillowAggressive = false;
+
+        @Config.Comment("Allow Reaping Willow to spawn naturally, in the Pale Garden biome only.")
+        @Config.Name("Reaping Willow Natural Spawning")
+        public boolean reapingWillowNaturalSpawn = false;
+
+        @Config.Comment("Spawn weight for Reaping Willow, relative to other hostile mobs in the Pale Garden.")
+        @Config.Name("Reaping Willow Spawn Weight")
+        public int reapingWillowSpawnWeight = 150;
+
+        @Config.Comment("Minimum group size when Reaping Willow spawns.")
+        @Config.Name("Reaping Willow Min Group Size")
+        public int reapingWillowMinGroupSize = 1;
+
+        @Config.Comment("Maximum group size when Reaping Willow spawns.")
+        @Config.Name("Reaping Willow Max Group Size")
+        public int reapingWillowMaxGroupSize = 1;
+
+        @Config.Comment("Allow Reaping Willow to spawn under direct open sky, not just fully underground/covered areas.")
+        @Config.Name("Reaping Willow Spawn Under Open Sky")
+        public boolean reapingWillowSpawnUnderOpenSky = false;
+
+        @Config.Comment("Only allow Reaping Willow to spawn at night.")
+        @Config.Name("Reaping Willow Night Only")
+        public boolean reapingWillowNightOnly = false;
+
+        @Config.Comment("Maximum Y level Reaping Willow can spawn at.")
+        @Config.Name("Reaping Willow Max Height")
+        public int reapingWillowMaxHeight = 50;
+
+        @Config.Comment("Maximum light level for Reaping Willow to spawn")
+        @Config.Name("Reaping Willow Max Light Level")
+        public int reapingWillowMaxLightLevel = 15;
     }
 
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)

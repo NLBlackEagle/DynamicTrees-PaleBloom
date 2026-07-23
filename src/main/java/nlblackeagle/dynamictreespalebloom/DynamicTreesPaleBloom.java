@@ -45,9 +45,6 @@ public class  DynamicTreesPaleBloom {
 //todo: Check sounds of the mod, they should work for the DT compat too.
 
 
-//todo: Reaping Willow always aggressive towards players and spawns naturally
-// underground
-
 //todo: Talk with others on what to do with: (With the team and I guess here too)
 // Pollenhead, natural growth? Make it always spew stuff around from a "Natural growth resin bulb" that has unlimited resin in it but when harvested poofs into a cloud of particles (unless harvested with a gardencrafted hoe perhaps? (nice progression)
 // Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.

@@ -50,9 +50,14 @@ public class  DynamicTreesPaleBloom {
 // Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
 // NightLight, natural growth, gives off light can hang from cave ceilings?
 
-//todo: Maybe add a new potion effect called or "Pale Lung" acting the same as
-// poison and on death it acts as a seed bomb and then replace the incense
-// thorns and pollenhead poison effects for the "Pale Lung" effect
+
+//todo: Pale Lung potion effect added (nlblackeagle.dynamictreespalebloom.potion) -
+// acts like Poison (non-lethal magic damage) but ticks at a configurable fraction
+// of Poison's speed (0.25x by default) and renders white hearts on the hotbar.
+// make the pale lung work on-death seed bomb behaviour, and swap the incense thorns poison too
+// alongside the wither effect (not sure which mechanics had this again though) I think pollenhead?
+// Make respiration on a helmet cancel the effect (give immunity) also when seed bomb goes off make
+// the surrounding area also contract pale lung
 
 //todo: weird root comes from sucker nodule tree, make this apparent
 

@@ -10,9 +10,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nlblackeagle.dynamictreespalebloom.ModContent;
+import nlblackeagle.dynamictreespalebloom.event.PaleLungHudHandler;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -26,6 +28,7 @@ public class ClientProxy extends CommonProxy {
     public void init() {
         super.init();
         registerColorHandlers();
+        MinecraftForge.EVENT_BUS.register(new PaleLungHudHandler());
     }
 
     @Override

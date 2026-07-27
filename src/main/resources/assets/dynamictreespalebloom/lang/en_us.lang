@@ -12,3 +12,8 @@ tile.pale_bloomingbranch.name=Blooming Pale Oak Tree
 tile.pale_blooming_creaking_heart.name=Creaking Heart
 tile.pale_birchbranch.name=Peeping Birch Tree
 tile.palebloom.peeping_birch_leaves.name=Peeping Birch Leaves
+
+effect.dynamictreespalebloom.pale_lung=Pale Lung
+potion.effect.pale_lung=Potion of Pale Lung
+potion.effect.pale_lung.splash=Splash Potion of Pale Lung
+potion.effect.pale_lung.lingering=Lingering Potion of Pale Lung

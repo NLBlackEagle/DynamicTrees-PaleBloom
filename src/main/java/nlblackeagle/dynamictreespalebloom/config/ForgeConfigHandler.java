@@ -81,6 +81,18 @@ public class ForgeConfigHandler {
         public double palePumpkinChance = 1.0;
     }
 
+    @Config.Comment("Pale Lung Potion Options")
+    @Config.Name("Pale Lung Potion Options")
+    public static final PaleLungConfig paleLung = new PaleLungConfig();
+
+    public static class PaleLungConfig {
+
+        @Config.Comment("Damage-tick speed of Pale Lung relative to vanilla Poison. 1.0 = same speed as Poison, 0.25 = ticks 4x less often (default).")
+        @Config.Name("Tick Speed Multiplier")
+        @Config.RangeDouble(min = 0.05, max = 4.0)
+        public double tickSpeedMultiplier = 0.25;
+    }
+
     @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience. Off by default - other packs using this addon should have to opt in.")
     @Config.Name("RLCraft Dregora Options")
     public static final RLCraftDregoraConfig rlcraftDregora = new RLCraftDregoraConfig();

@@ -27,6 +27,7 @@ public class ReapingWillowDeathHandler {
     @SubscribeEvent
     public void onDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof EntityReapingWillow)) return;
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.reapingWillowExplodeOnDeath) return;
 
         Entity entity = event.getEntity();
@@ -43,6 +44,7 @@ public class ReapingWillowDeathHandler {
         seedBomb.setFuse(0);
         world.spawnEntity(seedBomb);
 
+        PaleLungSeedBomb.markReapingWillowDetonation(world, entity.posX, entity.posY, entity.posZ, ForgeConfigHandler.seedBomb.reapingWillowRadius);
         PaleLungSeedBomb.trigger(world, pos, entity, ForgeConfigHandler.seedBomb.reapingWillowFloraPool, ForgeConfigHandler.seedBomb.reapingWillowRadius);
     }
 }

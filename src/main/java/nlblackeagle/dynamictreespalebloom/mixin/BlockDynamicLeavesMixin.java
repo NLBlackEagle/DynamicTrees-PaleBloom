@@ -39,6 +39,7 @@ public class BlockDynamicLeavesMixin {
 
     @Inject(method = "hasAdequateLight", at = @At("HEAD"), cancellable = true)
     private void dynamictreespalebloom$allowUndergroundLeaves(IBlockState blockState, World world, ILeavesProperties leavesProperties, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.enableUndergroundGrowth) return;
 
         TreeFamily family = leavesProperties.getTree();

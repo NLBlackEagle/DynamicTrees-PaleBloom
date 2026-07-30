@@ -51,17 +51,26 @@ public abstract class EntitySeedBombMixin {
     // method, which is exactly what's wanted here.
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 4.0D))
     private double dynamictreespalebloom$scaleHorizontalRadius(double original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         return resolveRadius();
     }
 
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 2.0D))
     private double dynamictreespalebloom$scaleVerticalRadius(double original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         // Keep the original 4.0 -> 2.0 (2:1) horizontal:vertical ratio.
         return resolveRadius() * 0.5D;
     }
 
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 16.0D))
     private double dynamictreespalebloom$scaleDistanceThreshold(double original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         double radius = resolveRadius();
         return radius * radius;
     }
@@ -70,6 +79,9 @@ public abstract class EntitySeedBombMixin {
     // arg) - see class javadoc. This is the fix that most likely matters visually.
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(intValue = 10))
     private int dynamictreespalebloom$scaleMossRadius(int original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         int radius = (int) Math.round(resolveRadius());
         // WorldGenMoss computes its per-axis radius as (maxRadius - 1) / 2, so solve
         // for the maxRadius that makes that equal our configured radius.
@@ -80,11 +92,17 @@ public abstract class EntitySeedBombMixin {
     // cosmetic but scaled too for visual consistency with everything else here.
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 6.0D))
     private double dynamictreespalebloom$scaleParticleSpreadRange(double original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         return resolveRadius() * 2.0D;
     }
 
     @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 3.0D))
     private double dynamictreespalebloom$scaleParticleSpreadOffset(double original) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return original;
+        }
         return resolveRadius();
     }
 

@@ -33,6 +33,7 @@ public class RLCraftDregoraDisableHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRegisterRecipes(RegistryEvent.Register<IRecipe> event) {
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.enableItemBlacklist) return;
 
         IForgeRegistryModifiable<IRecipe> registry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();

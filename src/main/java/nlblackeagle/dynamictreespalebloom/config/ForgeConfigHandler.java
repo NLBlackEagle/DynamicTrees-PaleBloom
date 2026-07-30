@@ -10,6 +10,25 @@ import nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloom;
 @Config(modid = DynamicTreesPaleBloom.MODID)
 public class ForgeConfigHandler {
 
+    @Config.Comment("Master enable/disable switches for entire feature sections. Off by default - everything in this addon beyond the base Dynamic Trees compat is opt-in.")
+    @Config.Name("Feature Toggles")
+    public static final FeatureTogglesConfig featureToggles = new FeatureTogglesConfig();
+
+    public static class FeatureTogglesConfig {
+
+        @Config.Comment("Master switch for the Pale Lung Potion Options section. When false, Pale Lung is never applied by anything in this addon (Incense Thorns, Seed Bomb Wither conversion, Seed Bomb area spread, etc.), regardless of those features' own individual settings.")
+        @Config.Name("Enable Pale Lung Options")
+        public boolean enablePaleLung = false;
+
+        @Config.Comment("Master switch for the Seed Bomb Options section. When false, none of this addon's own Seed Bomb additions (on-death trigger, flora scatter, extra Pale Lung spread, death particles, vertical moss, Wither conversion, radius rescaling) run at all, regardless of those features' own individual settings. Does NOT affect Reaping Willow's own native explosion (Pollenhead + real Seed Bomb spawn), which is governed by Reaping Willow Explodes On Death under RLCraft Dregora Options instead.")
+        @Config.Name("Enable Seed Bomb Options")
+        public boolean enableSeedBomb = false;
+
+        @Config.Comment("Master switch for the RLCraft Dregora Options section. When false, none of that section's features run at all, regardless of those features' own individual settings.")
+        @Config.Name("Enable RLCraft Dregora Options")
+        public boolean enableRLCraftDregora = false;
+    }
+
     @Config.Comment("Pale Oak Options")
     @Config.Name("Pale Oak Options")
     public static final PaleOakConfig paleOak = new PaleOakConfig();
@@ -58,7 +77,7 @@ public class ForgeConfigHandler {
         @Config.RangeInt(min = 1, max = 24)
         public int creakingHeartMinTrunkRadius = 5;
 
-        @Config.Comment("Chance (per direction, up to 4 checked) for a Sucker Root Nodule to generate near a Blooming Pale Oak. Matches Pale Bloom's own real rate by default.")
+        @Config.Comment("Chance (per direction, up to 4) for a Sucker Root Nodule to generate near a Blooming Pale Oak. 0.1 is Pale Bloom's default.")
         @Config.Name("Sucker Nodule Chance")
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double suckerNoduleChance = 0.10;
@@ -70,7 +89,7 @@ public class ForgeConfigHandler {
 
     public static class BiomeDecorationConfig {
 
-        @Config.Comment("Chance per chunk for a scattered Pale Petals patch to generate in the Pale Garden. 0.0 = never, 1.0 = every chunk. Roughly 10% of the current Hanging Moss chance by default.")
+        @Config.Comment("Chance per chunk for a scattered Pale Petals patch to generate in the Pale Garden. 0.0 = never, 1.0 = every chunk.")
         @Config.Name("Pale Petals Chance")
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double palePetalsChance = 0.075;
@@ -92,11 +111,11 @@ public class ForgeConfigHandler {
         @Config.RangeDouble(min = 0.05, max = 4.0)
         public double tickSpeedMultiplier = 0.25;
 
-        @Config.Comment("Wearing a helmet enchanted with Respiration grants immunity to Pale Lung - blocks new applications outright, and clears it if the helmet gets equipped mid-effect.")
+        @Config.Comment("Wearing a helmet enchanted with Respiration grants immunity to Pale Lung.")
         @Config.Name("Respiration Grants Immunity")
         public boolean respirationGrantsImmunity = true;
 
-        @Config.Comment("Swap Incense Thorns' natural-growth Poison effect over to Pale Lung.")
+        @Config.Comment("Swap Incense Thorns Poison effect over to Pale Lung.")
         @Config.Name("Replace Incense Thorns Poison")
         public boolean replaceIncenseThornsPoison = true;
 
@@ -105,13 +124,21 @@ public class ForgeConfigHandler {
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double ambientParticleChance = 0.05;
 
+        @Config.Comment("Entity registry names (e.g. \"minecraft:zombie\", \"minecraft:player\") used with \"Pale Lung Entity List Mode\" to control which entities can contract the pale lung effect. Also supports wildcards: @all, @player, @hostile, @passive, @ambient, and @<modid> (e.g. \"@palebloom\" matches every entity registered by the palebloom mod).")
+        @Config.Name("Pale Lung Entity List")
+        public String[] entityList = {"@palebloom"};
+
         @Config.Comment("Whether \"Pale Lung Entity List\" is treated as a whitelist (ONLY listed entities can be affected by Pale Lung) or a blacklist (listed entities are excluded, everyone else can be affected).")
         @Config.Name("Pale Lung Entity List Mode")
         public EntityListMode entityListMode = EntityListMode.BLACKLIST;
 
-        @Config.Comment("Entity registry names (e.g. \"minecraft:zombie\", \"minecraft:player\") used with \"Pale Lung Entity List Mode\" to control which entities Pale Lung can affect at all. Blocks new applications outright, the same mechanism as Respiration immunity. Empty list + blacklist mode = everyone can be affected (default).")
-        @Config.Name("Pale Lung Entity List")
-        public String[] entityList = new String[0];
+        @Config.Comment("Same registry-name/@wildcard syntax as \"Pale Lung Entity List\", but controls which Pale-Lung-affected entities actually take tick damage from it, vs which just carry the effect harmlessly (still shows white hearts, ambient particles, etc., just no damage).")
+        @Config.Name("Pale Lung Entity Damage List")
+        public String[] entityDamageList = {"@passive", "@player", "@srparasites"};
+
+        @Config.Comment("Whether \"Pale Lung Entity Damage List\" is a whitelist (ONLY listed entities take damage) or a blacklist (listed entities are excluded from damage, everyone else takes it).")
+        @Config.Name("Pale Lung Entity Damage List Mode")
+        public EntityListMode entityDamageListMode = EntityListMode.WHITELIST;
 
         public enum EntityListMode {
             WHITELIST, BLACKLIST
@@ -124,7 +151,7 @@ public class ForgeConfigHandler {
 
     public static class SeedBombConfig {
 
-        @Config.Comment("When an entity dies while affected by Pale Lung, trigger Seed Bomb effects (flora scatter, Pale Lung spread, particles, moss, etc.) at the death location - mirroring Reaping Willow's own on-death Seed Bomb behaviour.")
+        @Config.Comment("When an entity dies while affected by Pale Lung, trigger Seed Bomb effects (flora scatter, Pale Lung spread, particles, moss, etc.) at the death location.")
         @Config.Name("Pale Lung Death Triggers Seed Bomb Effects")
         public boolean seedBombOnDeath = true;
 
@@ -132,7 +159,7 @@ public class ForgeConfigHandler {
         @Config.Name("Seed Bomb Spreads Pale Lung")
         public boolean seedBombSpreadsPaleLung = true;
 
-        @Config.Comment("Radius (in blocks) for a detonating Seed Bomb's area of effect - governs how far it scatters flora, spreads Pale Lung, spawns death particles, spreads moss, and its native Wither/Creeper-conversion range - for everything EXCEPT Reaping Willow deaths (see \"Reaping Willow Radius\" for that one).")
+        @Config.Comment("Radius (in blocks) for the affected area in which moss and flora growth occurs when a pale lung affected entity dies.")
         @Config.Name("Seed Bomb Radius")
         @Config.RangeDouble(min = 1.0, max = 16.0)
         public double seedBombRadius = 4.0;
@@ -140,13 +167,13 @@ public class ForgeConfigHandler {
         @Config.Comment("Same as \"Seed Bomb Radius\", but specifically for Reaping Willow deaths.")
         @Config.Name("Reaping Willow Radius")
         @Config.RangeDouble(min = 1.0, max = 16.0)
-        public double reapingWillowRadius = 5.0;
+        public double reapingWillowRadius = 6.0;
 
-        @Config.Comment("Whether the Seed Bomb's Pale Lung spread also affects players caught in the radius.")
-        @Config.Name("Seed Bomb Affects Players")
-        public boolean seedBombAffectsPlayers = false;
+        @Config.Comment("Same registry-name/@wildcard syntax as \"Pale Lung Entity List\" - controls which entities the Seed Bomb's Pale Lung spread can affect. Default (\"@all\") affects everyone, including players.")
+        @Config.Name("Seed Bomb Affects Entities")
+        public String[] seedBombAffectsEntities = {"@all"};
 
-        @Config.Comment("Blocks (as \"modid:block\" or \"modid:block:meta\") or Dynamic Trees species (as \"modid:species\") a detonating Seed Bomb may randomly scatter within its radius, for everything EXCEPT Reaping Willow deaths (see \"Reaping Willow Flora Pool\" for that one). Optionally append \",weight\" to any entry (e.g. \"palebloom:bramble,100\") to bias how often it's picked relative to the others - higher = more likely. Entries with no weight suffix default to 100; a weight of 0 or less excludes that entry entirely.")
+        @Config.Comment("Blocks/species spawned when a entity affected with Pale Lung dies.")
         @Config.Name("Seed Bomb Flora Pool")
         public String[] seedBombFloraPool = {
                 "dynamictreespalebloom:pale_oak,25",
@@ -162,46 +189,57 @@ public class ForgeConfigHandler {
                 "minecraft:tallgrass:1,100"
         };
 
-        @Config.Comment("Blocks/species a detonating Seed Bomb may randomly scatter within its radius specifically for Reaping Willow deaths, separate from the general \"Seed Bomb Flora Pool\". Same optional \",weight\" suffix syntax applies here too.")
+        @Config.Comment("Flora spawned when a Reaping Willow dies.")
         @Config.Name("Reaping Willow Flora Pool")
         public String[] reapingWillowFloraPool = {
                 "palebloom:pollenhead,100"
         };
 
-        @Config.Comment("How many flora placement attempts a detonating Seed Bomb makes within its radius.")
+        @Config.Comment("How many flora placement attempts for both Reaping Willow & Pale Lung entity deaths.")
         @Config.Name("Seed Bomb Flora Count")
         @Config.RangeInt(min = 0, max = 32)
         public int seedBombFloraCount = 2;
 
-        @Config.Comment("Mute the vanilla explosion sound a Pale Lung death's Seed Bomb makes on detonation. Only reliable in singleplayer/integrated-server (see PaleLungSeedBombSoundHandler).")
+        @Config.Comment("Mutes the explosion sound from the pale lung, reaping willow and seed bombs")
         @Config.Name("Silence Seed Bomb Explosion Sound")
         public boolean seedBombSilent = true;
 
-        @Config.Comment("Spawn a burst of upward-floating Cloud particles above the spot where a Seed Bomb detonates (Reaping Willow death or otherwise).")
+        @Config.Comment("Spawns upward-floating Cloud particles when a moss-growth event occurs.")
         @Config.Name("Seed Bomb Death Particles")
         public boolean seedBombDeathParticles = true;
 
-        @Config.Comment("Adds a genuinely 3D/spherical Pale Moss spread on top of Pale Bloom's own native one (which is purely 2D and only follows terrain on a single flat layer). Uses the same Seed Bomb/Reaping Willow radius as everything else here.")
+        @Config.Comment("Makes the moss-spread spherical instead of a disc")
         @Config.Name("Seed Bomb Vertical Moss Spread")
         public boolean seedBombVerticalMoss = true;
 
-        @Config.Comment("When a Pale Lung death's Seed Bomb detonates, intercept and replace any Wither it would natively apply to nearby entities with Pale Lung instead (subject to the Pale Lung Entity List). Does NOT affect Reaping Willow's own Wither application, which stays as-is.")
+        @Config.Comment("Setting this option to true replaces the wither effect with the pale lung effect for both Pale Lung Seed Bombs and Reaping Willow's own on-death explosion (needs \"Enable Seed Bomb\" and/or \"Enable RLCraft Dregora Options\" enabled respectively for either source to actually be tracked).")
         @Config.Name("Seed Bomb Converts Wither To Pale Lung")
         public boolean seedBombConvertsWither = true;
     }
 
-    @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience. Off by default - other packs using this addon should have to opt in.")
+    @Config.Comment("Miscellaneous options - not tied to any specific feature section.")
+    @Config.Name("Miscellaneous")
+    public static final MiscellaneousConfig miscellaneous = new MiscellaneousConfig();
+
+    public static class MiscellaneousConfig {
+
+        @Config.Comment("Fixed a bug where harvesting Incense Thorns drops the item twice.")
+        @Config.Name("Fix Incense Thorns Double Drop")
+        public boolean fixIncenseThornsDoubleDrop = true;
+    }
+
+    @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience.")
     @Config.Name("RLCraft Dregora Options")
     public static final RLCraftDregoraConfig rlcraftDregora = new RLCraftDregoraConfig();
 
     public static class RLCraftDregoraConfig {
 
-        @Config.Comment("When set to true, disables all items in-game listed in the item blacklist.")
-        @Config.Name("Enable the item blacklist")
-        public boolean enableItemBlacklist = false;
+        @Config.Comment("When set to true, disables all items in-game listed in the crafting blacklist.")
+        @Config.Name("Enable the crafting blacklist")
+        public boolean enableItemBlacklist = true;
 
-        @Config.Comment("Real Pale Bloom items/blocks to remove entirely, using their real registry names (modid:name). Add more here as needed.")
-        @Config.Name("Item Blacklist")
+        @Config.Comment("Removed the crafting recipe for listed items.")
+        @Config.Name("Crafting Blacklist")
         public String[] itemBlacklist = {
                 "palebloom:mannequin",
                 "palebloom:creaking_heart",
@@ -210,21 +248,17 @@ public class ForgeConfigHandler {
                 "palebloom:pale_moss_cloak"
         };
 
-        @Config.Comment("Fixes a real Pale Bloom bug: harvesting Incense Thorns drops the item twice (once from its own manual NBT-preserving drop, once from the default drop path underneath it). True = only drop once.")
-        @Config.Name("Fix Incense Thorns Double Drop")
-        public boolean fixIncenseThornsDoubleDrop = true;
-
-        @Config.Comment("Allows Dynamic Trees to plant and grow fully underground, bypassing DT's own skylight requirements (both the initial seed-planting check and the ongoing leaf-survival check). Affects this addon's own Pale Bloom saplings/trees and vanilla Dark Oak specifically, not every Dynamic Trees species.")
+        @Config.Comment("Allows Pale and the Dark Oak Dynamic Trees to grow underground.")
         @Config.Name("Enable Underground Growth")
-        public boolean enableUndergroundGrowth = false;
+        public boolean enableUndergroundGrowth = true;
 
-        @Config.Comment("Makes Reaping Willow always aggressive toward players on sight. It currently has no ability to spontaneously target a player at all (only retaliates if attacked first) - this adds that.")
+        @Config.Comment("Makes Reaping Willow always aggressive toward players on sight.")
         @Config.Name("Reaping Willow Always Aggressive")
-        public boolean reapingWillowAggressive = false;
+        public boolean reapingWillowAggressive = true;
 
         @Config.Comment("Allow Reaping Willow to spawn naturally, in the Pale Garden biome only.")
         @Config.Name("Reaping Willow Natural Spawning")
-        public boolean reapingWillowNaturalSpawn = false;
+        public boolean reapingWillowNaturalSpawn = true;
 
         @Config.Comment("Spawn weight for Reaping Willow, relative to other hostile mobs in the Pale Garden.")
         @Config.Name("Reaping Willow Spawn Weight")
@@ -238,7 +272,7 @@ public class ForgeConfigHandler {
         @Config.Name("Reaping Willow Max Group Size")
         public int reapingWillowMaxGroupSize = 1;
 
-        @Config.Comment("Allow Reaping Willow to spawn under direct open sky, not just fully underground/covered areas.")
+        @Config.Comment("Allow Reaping Willow to spawn under direct open sky")
         @Config.Name("Reaping Willow Spawn Under Open Sky")
         public boolean reapingWillowSpawnUnderOpenSky = false;
 
@@ -254,9 +288,9 @@ public class ForgeConfigHandler {
         @Config.Name("Reaping Willow Max Light Level")
         public int reapingWillowMaxLightLevel = 15;
 
-        @Config.Comment("On death, Reaping Willow explodes like a real Seed Bomb (spreads Pale Moss, applies Wither to nearby non-pale creatures, converts nearby Creepers to Pale Creepers - no block destruction) and places a Pollenhead at the death location.")
+        @Config.Comment("On death, Reaping Willow explodes and spreads Pale Moss, applies Wither (or Pale Lung instead, if \"Seed Bomb Converts Wither To Pale Lung\" under Seed Bomb Options is enabled) to nearby non-pale creatures, converts nearby Creepers to Pale Creepers - no block destruction) and places a Pollenhead at the death location.")
         @Config.Name("Reaping Willow Explodes On Death")
-        public boolean reapingWillowExplodeOnDeath = false;
+        public boolean reapingWillowExplodeOnDeath = true;
     }
 
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)

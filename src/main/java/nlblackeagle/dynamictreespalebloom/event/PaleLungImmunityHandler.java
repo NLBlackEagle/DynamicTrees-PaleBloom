@@ -19,9 +19,13 @@ import nlblackeagle.dynamictreespalebloom.potion.PaleLungSeedBomb;
 /**
  * Gatekeeps Pale Lung: blocks it from ever being applied to entities excluded by the
  * whitelist/blacklist config, grants immunity to anyone wearing a Respiration helmet,
- * and - near a recent Pale Lung Seed Bomb detonation specifically - intercepts and
- * replaces any Wither the native explosion would otherwise apply with Pale Lung
- * instead (still subject to the entity list).
+ * and - near a recent Seed Bomb detonation, whether Pale-Lung-triggered or
+ * Reaping-Willow-triggered (see {@link PaleLungSeedBomb.DetonationSource}) -
+ * intercepts and replaces any Wither the native explosion would otherwise apply with
+ * Pale Lung instead (still subject to the entity list). One shared "Seed Bomb Converts
+ * Wither To Pale Lung" toggle governs both sources; each source still needs its own
+ * master feature toggle (Seed Bomb / RLCraft Dregora) enabled for its detonations to
+ * be tracked at all.
  */
 public class PaleLungImmunityHandler {
 
@@ -40,11 +44,19 @@ public class PaleLungImmunityHandler {
             return;
         }
 
-        if (ForgeConfigHandler.seedBomb.seedBombConvertsWither
-                && ModPotions.paleLung != null
-                && event.getPotionEffect().getPotion() == MobEffects.WITHER
-                && PaleLungEntityFilter.isAllowed(entity)
-                && PaleLungSeedBomb.isRecentDetonation(entity.posX, entity.posY, entity.posZ)) {
+        if (ModPotions.paleLung == null
+                || event.getPotionEffect().getPotion() != MobEffects.WITHER
+                || !PaleLungEntityFilter.isAllowed(entity)
+                || !ForgeConfigHandler.seedBomb.seedBombConvertsWither) {
+            return;
+        }
+
+        boolean nearSeedBomb = (ForgeConfigHandler.featureToggles.enableSeedBomb
+                    && PaleLungSeedBomb.isRecentPaleLungDetonation(entity.posX, entity.posY, entity.posZ))
+                || (ForgeConfigHandler.featureToggles.enableRLCraftDregora
+                    && PaleLungSeedBomb.isRecentReapingWillowDetonation(entity.posX, entity.posY, entity.posZ));
+
+        if (nearSeedBomb) {
             event.setResult(Event.Result.DENY);
             PotionEffect witherEffect = event.getPotionEffect();
             entity.addPotionEffect(new PotionEffect(ModPotions.paleLung, witherEffect.getDuration(), witherEffect.getAmplifier()));

@@ -23,7 +23,7 @@ public class BlockIncenseThornMixin {
 
     @Inject(method = {"harvestBlock", "func_180657_a"}, at = @At("HEAD"), cancellable = true)
     private void dynamictreespalebloom$fixDoubleDrop(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack, CallbackInfo ci) {
-        if (!ForgeConfigHandler.rlcraftDregora.fixIncenseThornsDoubleDrop) return;
+        if (!ForgeConfigHandler.miscellaneous.fixIncenseThornsDoubleDrop) return;
 
         if (te instanceof TileIncenseThorn) {
             TileIncenseThorn tile = (TileIncenseThorn) te;

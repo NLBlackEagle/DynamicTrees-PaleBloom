@@ -21,6 +21,9 @@ public class PaleLungDeathHandler {
 
     @SubscribeEvent
     public void onDeath(LivingDeathEvent event) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return;
+        }
         if (!ForgeConfigHandler.seedBomb.seedBombOnDeath) {
             return;
         }

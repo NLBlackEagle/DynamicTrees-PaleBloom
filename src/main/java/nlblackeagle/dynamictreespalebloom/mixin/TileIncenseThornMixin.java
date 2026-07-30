@@ -25,6 +25,9 @@ public class TileIncenseThornMixin {
 
     @Inject(method = "getPotion", at = @At("RETURN"), cancellable = true)
     private void dynamictreespalebloom$swapPoisonForPaleLung(CallbackInfoReturnable<Potion> cir) {
+        if (!ForgeConfigHandler.featureToggles.enablePaleLung) {
+            return;
+        }
         if (!ForgeConfigHandler.paleLung.replaceIncenseThornsPoison) {
             return;
         }

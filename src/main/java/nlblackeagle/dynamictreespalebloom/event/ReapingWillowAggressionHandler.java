@@ -26,6 +26,7 @@ public class ReapingWillowAggressionHandler {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.reapingWillowAggressive) return;
         if (!(event.getEntityLiving() instanceof EntityReapingWillow)) return;
 

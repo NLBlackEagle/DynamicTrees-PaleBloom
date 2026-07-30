@@ -35,6 +35,7 @@ public class SeedMixin {
 
     @Inject(method = "hasForcePlant", at = @At("HEAD"), cancellable = true)
     private void dynamictreespalebloom$allowUndergroundPlanting(ItemStack seedStack, CallbackInfoReturnable<Boolean> cir) {
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.enableUndergroundGrowth) return;
 
         Seed self = (Seed) (Object) this;

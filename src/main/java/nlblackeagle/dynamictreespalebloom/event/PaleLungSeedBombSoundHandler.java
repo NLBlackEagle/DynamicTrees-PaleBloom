@@ -11,7 +11,7 @@ import nlblackeagle.dynamictreespalebloom.potion.PaleLungSeedBomb;
 
 /**
  * Mutes the vanilla "entity.generic.explode" sound specifically when it's playing near
- * a recent Pale Lung Seed Bomb detonation (see {@link PaleLungSeedBomb#isRecentDetonation}),
+ * a recent Pale Lung Seed Bomb detonation (see {@link PaleLungSeedBomb#isRecentPaleLungDetonation}),
  * since EntitySeedBomb is structurally a near-clone of vanilla's own EntityTNTPrimed
  * (same FUSE data parameter, same tntPlacedBy field, same explodeUnderwater method) and
  * uses that exact sound on detonation - confirmed directly from the shipped
@@ -21,7 +21,7 @@ import nlblackeagle.dynamictreespalebloom.potion.PaleLungSeedBomb;
  * this doesn't depend on knowing SoundEvents' SRG/MCP mapping at all.
  * <p>
  * Only reliable in singleplayer/integrated-server - see the caveat on
- * {@link PaleLungSeedBomb#isRecentDetonation}.
+ * {@link PaleLungSeedBomb#isRecentPaleLungDetonation}.
  */
 @SideOnly(Side.CLIENT)
 public class PaleLungSeedBombSoundHandler {
@@ -30,6 +30,9 @@ public class PaleLungSeedBombSoundHandler {
 
     @SubscribeEvent
     public void onPlaySound(PlaySoundEvent event) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return;
+        }
         if (!ForgeConfigHandler.seedBomb.seedBombSilent) {
             return;
         }
@@ -39,7 +42,7 @@ public class PaleLungSeedBombSoundHandler {
             return;
         }
 
-        if (PaleLungSeedBomb.isRecentDetonation(sound.getXPosF(), sound.getYPosF(), sound.getZPosF())) {
+        if (PaleLungSeedBomb.isRecentPaleLungDetonation(sound.getXPosF(), sound.getYPosF(), sound.getZPosF())) {
             event.setResultSound(null);
         }
     }

@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -63,8 +62,16 @@ public class PaleLungSeedBomb {
      * the given radius, using the given flora pool. Does NOT spawn a real
      * EntitySeedBomb - call {@link #spawnNative} separately alongside this where
      * appropriate.
+     * <p>
+     * Gated on the "Enable Seed Bomb" master toggle here rather than in each caller,
+     * since both PaleLungDeathHandler and ReapingWillowDeathHandler call this - one
+     * check covers both without touching ReapingWillowDeathHandler's own logic.
      */
     public static void trigger(World world, BlockPos pos, Entity exclude, String[] floraPool, double radius) {
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
+            return;
+        }
+
         applyPaleLung(world, pos, exclude, radius);
         scatterFlora(world, pos, floraPool, radius);
         scheduleDeathParticles(world, pos, radius);
@@ -236,13 +243,34 @@ public class PaleLungSeedBomb {
         seedBomb.setFuse(0);
         world.spawnEntity(seedBomb);
 
-        markDetonation(entity.posX, entity.posY, entity.posZ, radius);
+        markDetonation(entity.posX, entity.posY, entity.posZ, radius, DetonationSource.PALE_LUNG);
+    }
+
+    /**
+     * Marks a Reaping-Willow-triggered detonation for tracking, the same way
+     * {@link #spawnNative} does for Pale Lung deaths - call this from
+     * ReapingWillowDeathHandler right after it spawns its own EntitySeedBomb. Tagged
+     * with a different {@link DetonationSource} so consumers (currently just the
+     * Wither conversion in PaleLungImmunityHandler) can react to it independently of
+     * Pale-Lung-triggered detonations, under its own separate config toggle.
+     */
+    public static void markReapingWillowDetonation(World world, double x, double y, double z, double radius) {
+        if (world.isRemote) {
+            return;
+        }
+        markDetonation(x, y, z, radius, DetonationSource.REAPING_WILLOW);
+    }
+
+    public enum DetonationSource {
+        PALE_LUNG, REAPING_WILLOW
     }
 
     // ------------------------------------------------------------------
     // Detonation tracking - used for both sound suppression and the
-    // Wither -> Pale Lung conversion, since both need "did a Pale Lung Seed Bomb just
-    // go off near here" info.
+    // Wither -> Pale Lung conversion, since both need "did a Seed Bomb just go off
+    // near here" info. Tagged with a DetonationSource so the two Wither-conversion
+    // toggles (Seed Bomb Options' for Pale Lung deaths, RLCraft Dregora's for Reaping
+    // Willow) can be checked independently for the right source.
     // ------------------------------------------------------------------
 
     // Only meaningful in singleplayer/integrated-server for the sound-suppression use
@@ -254,23 +282,41 @@ public class PaleLungSeedBomb {
     private static final Map<BlockPos, Detonation> RECENT_DETONATIONS = new HashMap<>();
     private static final long DETONATION_WINDOW_MS = 2000L;
 
-    private static void markDetonation(double x, double y, double z, double radius) {
+    private static void markDetonation(double x, double y, double z, double radius, DetonationSource source) {
         purgeExpiredDetonations();
-        RECENT_DETONATIONS.put(new BlockPos(x, y, z), new Detonation(System.currentTimeMillis(), radius));
+        RECENT_DETONATIONS.put(new BlockPos(x, y, z), new Detonation(System.currentTimeMillis(), radius, source));
     }
 
     /**
-     * Whether a Pale Lung Seed Bomb detonated near this position within the last couple
-     * of seconds - used by {@link nlblackeagle.dynamictreespalebloom.event.PaleLungSeedBombSoundHandler}
+     * Whether a Pale-Lung-triggered Seed Bomb detonated near this position within the
+     * last couple of seconds - used by {@link nlblackeagle.dynamictreespalebloom.event.PaleLungSeedBombSoundHandler}
      * to decide whether to mute an incoming generic-explosion sound, and by
      * {@link nlblackeagle.dynamictreespalebloom.event.PaleLungImmunityHandler} to decide
      * whether to convert an incoming Wither application to Pale Lung instead.
      */
-    public static boolean isRecentDetonation(double x, double y, double z) {
+    public static boolean isRecentPaleLungDetonation(double x, double y, double z) {
+        return findRecentDetonation(x, y, z, DetonationSource.PALE_LUNG);
+    }
+
+    /**
+     * Same as {@link #isRecentPaleLungDetonation}, but for Reaping-Willow-triggered
+     * detonations specifically - used by PaleLungImmunityHandler to gate the separate
+     * "Reaping Willow Converts Wither To Pale Lung" toggle.
+     */
+    public static boolean isRecentReapingWillowDetonation(double x, double y, double z) {
+        return findRecentDetonation(x, y, z, DetonationSource.REAPING_WILLOW);
+    }
+
+    private static boolean findRecentDetonation(double x, double y, double z, DetonationSource source) {
         purgeExpiredDetonations();
         for (Map.Entry<BlockPos, Detonation> entry : RECENT_DETONATIONS.entrySet()) {
+            Detonation detonation = entry.getValue();
+            if (detonation.source != source) {
+                continue;
+            }
+
             BlockPos pos = entry.getKey();
-            double radius = entry.getValue().radius;
+            double radius = detonation.radius;
             double dx = pos.getX() + 0.5 - x;
             double dy = pos.getY() + 0.5 - y;
             double dz = pos.getZ() + 0.5 - z;
@@ -289,10 +335,12 @@ public class PaleLungSeedBomb {
     private static class Detonation {
         final long timeMs;
         final double radius;
+        final DetonationSource source;
 
-        Detonation(long timeMs, double radius) {
+        Detonation(long timeMs, double radius, DetonationSource source) {
             this.timeMs = timeMs;
             this.radius = radius;
+            this.source = source;
         }
     }
 
@@ -315,7 +363,7 @@ public class PaleLungSeedBomb {
             if (living == exclude) {
                 continue;
             }
-            if (living instanceof EntityPlayer && !ForgeConfigHandler.seedBomb.seedBombAffectsPlayers) {
+            if (!PaleLungEntityMatcher.matchesAny(ForgeConfigHandler.seedBomb.seedBombAffectsEntities, living)) {
                 continue;
             }
 

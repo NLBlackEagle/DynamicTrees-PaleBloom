@@ -25,6 +25,7 @@ import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
 public class ReapingWillowSpawnHandler {
 
     public static void registerSpawns() {
+        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.reapingWillowNaturalSpawn) return;
 
         EntityRegistry.addSpawn(

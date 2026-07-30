@@ -50,9 +50,28 @@ public class PotionPaleLung extends Potion {
 
     @Override
     public void performEffect(EntityLivingBase entity, int amplifier) {
+        if (!isDamageAllowed(entity)) {
+            // Still an active, ticking effect (hearts stay white, ambient particles
+            // still show, etc.) - it just doesn't hurt this particular entity, per
+            // the "Pale Lung Entity Damage List" config.
+            return;
+        }
+
         // Identical to vanilla Poison: damages the entity, but can never bring it below 1 HP.
         if (entity.getHealth() > 1.0F) {
             entity.attackEntityFrom(DamageSource.MAGIC, 1.0F);
+        }
+    }
+
+    private boolean isDamageAllowed(EntityLivingBase entity) {
+        boolean inList = PaleLungEntityMatcher.matchesAny(ForgeConfigHandler.paleLung.entityDamageList, entity);
+
+        switch (ForgeConfigHandler.paleLung.entityDamageListMode) {
+            case WHITELIST:
+                return inList;
+            case BLACKLIST:
+            default:
+                return !inList;
         }
     }
 

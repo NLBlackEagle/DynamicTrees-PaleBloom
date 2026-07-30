@@ -50,14 +50,23 @@ public class  DynamicTreesPaleBloom {
 // Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
 // NightLight, natural growth, gives off light can hang from cave ceilings?
 
-
-//todo: Pale Lung potion effect added (nlblackeagle.dynamictreespalebloom.potion) -
+//todo: Pale Lung potion effect (nlblackeagle.dynamictreespalebloom.potion) -
 // acts like Poison (non-lethal magic damage) but ticks at a configurable fraction
 // of Poison's speed (0.25x by default) and renders white hearts on the hotbar.
-// make the pale lung work on-death seed bomb behaviour, and swap the incense thorns poison too
-// alongside the wither effect (not sure which mechanics had this again though) I think pollenhead?
-// Make respiration on a helmet cancel the effect (give immunity) also when seed bomb goes off make
-// the surrounding area also contract pale lung
+// Done: on-death Pollenhead + Pale Lung spread (PaleLungDeathHandler), Reaping
+// Willow's own Seed Bomb also spreads Pale Lung now (PaleLungSeedBomb), Respiration
+// grants immunity (PaleLungImmunityHandler), Incense Thorns' Poison swapped to Pale
+// Lung via a TileIncenseThorn#getPotion() redirect (TileIncenseThornMixin).
+// Still open:
+// - Pale-Lung deaths don't spawn a *real* EntitySeedBomb (only Reaping Willow's
+//   constructor is confirmed) - so they get Pollenhead + Pale Lung spread, but not
+//   Pale Bloom's own native Pale Moss spread / Creeper conversion. Tell me if
+//   EntitySeedBomb has a constructor that takes a generic EntityLivingBase/thrower
+//   and I'll wire that in too.
+// - Not sure Pollenhead itself ever applies Poison/Wither directly - the "Wither
+//   nearby non-pale creatures" behaviour we know about lives in EntitySeedBomb's
+//   explosion, not Pollenhead. If Pollenhead does poison something on its own,
+//   point me at where and I'll swap that too.
 
 //todo: weird root comes from sucker nodule tree, make this apparent
 

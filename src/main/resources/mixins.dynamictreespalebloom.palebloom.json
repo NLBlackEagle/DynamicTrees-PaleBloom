@@ -11,7 +11,9 @@
     "JTPGBiomesMixin",
     "BlockPaleHangingMossMixin",
     "BlockBranchFellingMixin",
-    "BlockIncenseThornMixin"
+    "BlockIncenseThornMixin",
+    "TileIncenseThornMixin",
+    "EntitySeedBombMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

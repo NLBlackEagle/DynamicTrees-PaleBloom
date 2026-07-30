@@ -15,6 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nlblackeagle.dynamictreespalebloom.ModContent;
 import nlblackeagle.dynamictreespalebloom.event.PaleLungHudHandler;
+import nlblackeagle.dynamictreespalebloom.event.PaleLungParticleHandler;
+import nlblackeagle.dynamictreespalebloom.event.PaleLungSeedBombSoundHandler;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -29,6 +31,8 @@ public class ClientProxy extends CommonProxy {
         super.init();
         registerColorHandlers();
         MinecraftForge.EVENT_BUS.register(new PaleLungHudHandler());
+        MinecraftForge.EVENT_BUS.register(new PaleLungParticleHandler());
+        MinecraftForge.EVENT_BUS.register(new PaleLungSeedBombSoundHandler());
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
+import nlblackeagle.dynamictreespalebloom.potion.PaleLungSeedBomb;
 
 // On death, Reaping Willow explodes like a real Seed Bomb and places a
 // Pollenhead. Rather than reimplementing EntitySeedBomb's explosion logic
@@ -41,5 +42,7 @@ public class ReapingWillowDeathHandler {
         EntitySeedBomb seedBomb = new EntitySeedBomb(world, entity.posX, entity.posY, entity.posZ, (EntityReapingWillow) entity);
         seedBomb.setFuse(0);
         world.spawnEntity(seedBomb);
+
+        PaleLungSeedBomb.trigger(world, pos, entity, ForgeConfigHandler.seedBomb.reapingWillowFloraPool, ForgeConfigHandler.seedBomb.reapingWillowRadius);
     }
 }

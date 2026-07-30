@@ -95,7 +95,7 @@ public class PaleLungSeedBomb {
     // "ground moss" placement rule the native version uses, just no longer restricted
     // to one flat layer.
     private static void spreadVerticalMoss(World world, BlockPos center, double radius) {
-        if (!ForgeConfigHandler.seedBomb.seedBombVerticalMoss) {
+        if (!ForgeConfigHandler.seedBomb.seedBombSphericalMoss) {
             return;
         }
         if (world.isRemote) {
@@ -561,7 +561,7 @@ public class PaleLungSeedBomb {
             // explicitly, using the same Pale Lung swap toggle as everywhere else.
             TileEntity te = world.getTileEntity(placePos);
             if (te instanceof TileIncenseThorn) {
-                Potion potion = (ForgeConfigHandler.paleLung.replaceIncenseThornsPoison && ModPotions.paleLung != null)
+                Potion potion = (ForgeConfigHandler.paleLung.replacePollenheadAndIncenseThornsPoison && ModPotions.paleLung != null)
                         ? ModPotions.paleLung
                         : MobEffects.POISON;
                 ((TileIncenseThorn) te).setPotion(potion);

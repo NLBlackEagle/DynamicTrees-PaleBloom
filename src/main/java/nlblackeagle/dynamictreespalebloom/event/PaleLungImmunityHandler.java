@@ -23,9 +23,9 @@ import nlblackeagle.dynamictreespalebloom.potion.PaleLungSeedBomb;
  * Reaping-Willow-triggered (see {@link PaleLungSeedBomb.DetonationSource}) -
  * intercepts and replaces any Wither the native explosion would otherwise apply with
  * Pale Lung instead (still subject to the entity list). One shared "Seed Bomb Converts
- * Wither To Pale Lung" toggle governs both sources; each source still needs its own
- * master feature toggle (Seed Bomb / RLCraft Dregora) enabled for its detonations to
- * be tracked at all.
+ * Wither To Pale Lung" toggle governs both sources, and both now live under the same
+ * "Enable Seed Bomb" master toggle too (Reaping Willow's own explosion trigger moved
+ * from RLCraft Dregora Options into Seed Bomb Options).
  */
 public class PaleLungImmunityHandler {
 
@@ -51,10 +51,9 @@ public class PaleLungImmunityHandler {
             return;
         }
 
-        boolean nearSeedBomb = (ForgeConfigHandler.featureToggles.enableSeedBomb
-                    && PaleLungSeedBomb.isRecentPaleLungDetonation(entity.posX, entity.posY, entity.posZ))
-                || (ForgeConfigHandler.featureToggles.enableRLCraftDregora
-                    && PaleLungSeedBomb.isRecentReapingWillowDetonation(entity.posX, entity.posY, entity.posZ));
+        boolean nearSeedBomb = ForgeConfigHandler.featureToggles.enableSeedBomb
+                && (PaleLungSeedBomb.isRecentPaleLungDetonation(entity.posX, entity.posY, entity.posZ)
+                    || PaleLungSeedBomb.isRecentReapingWillowDetonation(entity.posX, entity.posY, entity.posZ));
 
         if (nearSeedBomb) {
             event.setResult(Event.Result.DENY);

@@ -27,8 +27,8 @@ public class ReapingWillowDeathHandler {
     @SubscribeEvent
     public void onDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof EntityReapingWillow)) return;
-        if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
-        if (!ForgeConfigHandler.rlcraftDregora.reapingWillowExplodeOnDeath) return;
+        if (!ForgeConfigHandler.featureToggles.enableSeedBomb) return;
+        if (!ForgeConfigHandler.seedBomb.reapingWillowExplodeOnDeath) return;
 
         Entity entity = event.getEntity();
         World world = entity.world;

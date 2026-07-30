@@ -13,7 +13,8 @@
     "BlockBranchFellingMixin",
     "BlockIncenseThornMixin",
     "TileIncenseThornMixin",
-    "EntitySeedBombMixin"
+    "EntitySeedBombMixin",
+    "TilePollenheadMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

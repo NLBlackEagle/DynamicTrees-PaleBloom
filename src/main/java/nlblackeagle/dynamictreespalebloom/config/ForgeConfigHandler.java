@@ -234,6 +234,18 @@ public class ForgeConfigHandler {
         @Config.Comment("The Pollenhead poison effect stops searching for entities after it finds a entity that already has the poison/pale lung effect. Enabling this will make sure it continues scanning until all entities are found.")
         @Config.Name("Fix Pollenhead Entity Check")
         public boolean fixPollenheadPaleEntityCheckBug = true;
+
+        @Config.Comment("Resin Bulb's nightly \"search for an active Creaking Heart\" scan is a real (if fairly minor) performance cost: every loaded bulb runs it on the exact same tick (they're never staggered), it doesn't skip bulbs that are already at max resin (where the scan's result gets thrown away anyway), and it checks a fairly large area. This: (1) always skips the scan entirely once a bulb is already at max resin - zero behaviour change, pure waste elimination; (2) shrinks the search area from 21x21x21 to 17x17x17; (3) doubles the interval between scans from 15 to 30 seconds; (4) caps how many bulbs can run this scan on the same tick to 10, so the rest wait for their next cycle instead of all firing at once.")
+        @Config.Name("Optimize Resin Bulb Heart Search")
+        public boolean optimizeResinBulbHeartSearch = true;
+
+        @Config.Comment("Fixes a real Pale Bloom bug in Resin Bulb's daytime plant-search: it uses \"bulbCheckDistanceXZ\" (8) for both the X and Y axes, and \"bulbCheckDistanceY\" (10) for Z - clearly a mixed-up axis assignment given the field names. This corrects it so XZ governs X/Z and Y governs Y, as the field names actually promise. The real search box goes from 16x16x20 (X:8, Y:8, Z:10) to the intended 16x20x16 (X:8, Y:10, Z:8).")
+        @Config.Name("Fix Resin Bulb Search Area Bug")
+        public boolean fixResinBulbSearchAreaBug = true;
+
+        @Config.Comment("Prevents Sucker Roots from damaging entities that walk into them (the taller, 2-layer variant normally deals 1 damage per second). Movement slowdown from walking through them still applies either way - this only removes the damage. Off by default, meaning damage still happens unless you enable this.")
+        @Config.Name("Disable Sucker Roots Damage")
+        public boolean disableSuckerRootsDamage = false;
     }
 
     @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience.")
@@ -295,6 +307,14 @@ public class ForgeConfigHandler {
         @Config.Comment("Maximum light level for Reaping Willow to spawn")
         @Config.Name("Reaping Willow Max Light Level")
         public int reapingWillowMaxLightLevel = 15;
+
+        @Config.Comment("Removes all Incense Thorns crafting recipes (every potion flavour - poison, speed, strength, weakness, regeneration, slowness). The item itself stays visible/browsable in JEI, but since there's no recipe left to find, JEI's own \"how to craft this\" info tab for it ends up empty on its own - no separate JEI-hiding needed. Intended to make Pollenhead's Pale Lung aura the sole/default \"aura plant\" experience instead of having two overlapping sources. Does NOT currently stop wild Incense Thorns that already naturally spawn in the world from being found/harvested.")
+        @Config.Name("Disable Incense Thorns")
+        public boolean disableIncenseThorns = true;
+
+        @Config.Comment("Redirects Pale Bloom's own JEI info-board descriptions (Incense Thorns, Pale Oak Hollow, Pollenhead, Resin Bulb) to \"dregora.<original key>\" lang entries instead of their normal keys, so this addon's own lang file can override that text without touching Pale Bloom's files directly. This addon ships default \"dregora.\" entries matching the normal text for all four, so nothing looks broken/untranslated if you enable this before writing your own wording - just edit those entries in the lang file to customize them.")
+        @Config.Name("Enable Dregora Lang Keys")
+        public boolean enableDregoraLangKeys = false;
     }
 
     @Mod.EventBusSubscriber(modid = DynamicTreesPaleBloom.MODID)

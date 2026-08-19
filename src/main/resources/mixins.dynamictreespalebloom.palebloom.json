@@ -15,7 +15,11 @@
     "TileIncenseThornMixin",
     "EntitySeedBombMixin",
     "TilePollenheadMixin",
-    "IncenseThornsNBTRecipeMixin"
+    "IncenseThornsNBTRecipeMixin",
+    "ItemIncenseBushMixin",
+    "CompatJEIMixin",
+    "TileResinBulbMixin",
+    "BlockSuckerRootsMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

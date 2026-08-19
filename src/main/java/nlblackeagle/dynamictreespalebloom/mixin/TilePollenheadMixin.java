@@ -41,6 +41,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = TilePollenhead.class, remap = false)
 public abstract class TilePollenheadMixin extends TileEntity {
 
+    // world/pos are inherited from vanilla TileEntity - they're NOT declared in
+    // TilePollenhead itself (confirmed directly from a decompile of the actual target
+    // class: its own fields are just storedResin, resinMinPull, resinPullQuantity,
+    // isAwake, pollenDistanceXZ, pollenDistanceY, poisonDistance, hybridizeDistance).
+    // @Shadow only searches the target class's OWN declared fields, never superclass
+    // fields, no matter what alias is given - that's why the earlier @Shadow(aliases=
+    // "field_145850_b"/"field_174879_c") attempt still failed identically. Extending
+    // TileEntity here instead gives real, normal Java inheritance for world/pos
+    // (Mixin discards this fake inheritance during the actual bytecode merge - it's
+    // purely a compile-time trick so the field references below resolve correctly).
+    // poisonDistance below still needs @Shadow, since that one genuinely is declared
+    // directly on TilePollenhead itself.
     @Shadow
     public int poisonDistance;
 

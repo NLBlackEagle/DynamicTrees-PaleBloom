@@ -17,3 +17,18 @@ effect.dynamictreespalebloom.pale_lung=Pale Lung
 potion.effect.pale_lung=Potion of Pale Lung
 potion.effect.pale_lung.splash=Splash Potion of Pale Lung
 potion.effect.pale_lung.lingering=Lingering Potion of Pale Lung
+
+jei.palebloom.incense_thorns.desc=Incense Thorns burn resin and gives nearby players and mobs the pale lung effect at night.\n\nAt Night, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing mist and giving the pale lung potion effect to all entities within a 10x10x10 block range. Stored Resin is burnt by 1 every 6 seconds awake (or 16 if no Effect is attached).
+jei.palebloom.pollenhead.desc=Pollenheads convert Resin into clouds of pollen, giving nearby players and mobs the pale lung effect while converting normal plants into pale counterparts, at Night.\n\nAt Night, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing pollen and giving the pale lung effect to all entities within a 8x8x8 block range.\n\nPlants within this same range have a chance to be converted into pale counterparts, at the cost of 8 Resin. Stored Resin is spent by 1 every 10 seconds awake.
+jei.dynamictreespalebloom.live_root.desc=Weird roots are harvested from sucker nodules which sometimes grow beneath Blooming Pale Oak trees.
+
+# "dregora." versions of the same four JEI info-board keys - only used when "Enable
+# Dregora Lang Keys" is on (see CompatJEIMixin). Defaulted to match the text above (or
+# Pale Bloom's original wording, for the two that don't mention Poison at all) so
+# nothing looks broken/untranslated out of the box - edit these specifically to give
+# them their own distinct Dregora-flavoured wording.
+dregora.jei.palebloom.incense_thorns.desc=Incense Thorns burn resin and gives nearby players and mobs the pale lung effect at night or underground.\n\nAt night/underground, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing mist and giving the pale lung potion effect to all entities within a 10x10x10 block range. Stored Resin is burnt by 1 every 6 seconds awake (or 16 if no Effect is attached).
+dregora.jei.palebloom.pale_oak_hollow.desc=Pale Oak Hollows convert Resin into Pale Oak Sap which can be bottled, at night/underground.\n\nAt night/underground, becomes Awake, seeking Resin from a Resin Bulb.\n\nCollected Resin slowly increases the sap level by 1 per every 8 Resin. Once reaching the max sap level of 4, it changes appearance.\n\nUsing a glass bottle on a full Pale Oak Hollow collects the sap as Pale Oak Sap, and the Hollow resets to empty.
+dregora.jei.palebloom.pollenhead.desc=Pollenheads convert Resin into clouds of pollen, giving nearby players and mobs the pale lung effect while converting normal plants into pale counterparts, at night/underground.\n\nAt night/underground, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing pollen and giving the pale lung effect to all entities within a 8x8x8 block range.\n\nPlants within this same range have a chance to be converted into pale counterparts, at the cost of 8 Resin. Stored Resin is spent by 1 every 10 seconds awake.
+dregora.jei.palebloom.resin_bulb.desc=Resin Bulbs create Resin via proximity to nearby Pale Plants.\n\nEvery 3 seconds during Day, a random position in a 16x16x20 block area (centered on the bulb) is checked. If it is a Pale Plant, the Bulb gains Resin.\n\nThe amount of Resin gained is based on the plant.\n\nEvery 30 seconds during night/underground, if an Active Creaking Heart is within a 17x17x17 block area, the Resin Bulb will gain 8 Resin from it. This only occurs for 1 Creaking Heart.
+

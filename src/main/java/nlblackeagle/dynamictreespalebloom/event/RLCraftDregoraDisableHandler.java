@@ -34,15 +34,29 @@ public class RLCraftDregoraDisableHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRegisterRecipes(RegistryEvent.Register<IRecipe> event) {
         if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
-        if (!ForgeConfigHandler.rlcraftDregora.enableItemBlacklist) return;
 
         IForgeRegistryModifiable<IRecipe> registry = (IForgeRegistryModifiable<IRecipe>) event.getRegistry();
 
         List<Item> blacklistedItems = new ArrayList<>();
-        for (String entry : ForgeConfigHandler.rlcraftDregora.itemBlacklist) {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry));
-            if (item != null) blacklistedItems.add(item);
+
+        if (ForgeConfigHandler.rlcraftDregora.enableItemBlacklist) {
+            for (String entry : ForgeConfigHandler.rlcraftDregora.itemBlacklist) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry));
+                if (item != null) blacklistedItems.add(item);
+            }
         }
+
+        // Separate, dedicated toggle rather than requiring "palebloom:incense_thorns"
+        // to be manually added to the general Crafting Blacklist - this removes every
+        // potion-flavoured recipe (poison, speed, strength, weakness, regeneration,
+        // slowness) in one go, since they all share the same output item registry
+        // name regardless of which potion NBT they bake in.
+        if (ForgeConfigHandler.rlcraftDregora.disableIncenseThorns) {
+            Item incenseThorns = ForgeRegistries.ITEMS.getValue(new ResourceLocation("palebloom:incense_thorns"));
+            if (incenseThorns != null) blacklistedItems.add(incenseThorns);
+        }
+
+        if (blacklistedItems.isEmpty()) return;
 
         List<ResourceLocation> recipesToRemove = new ArrayList<>();
         for (IRecipe recipe : registry.getValuesCollection()) {

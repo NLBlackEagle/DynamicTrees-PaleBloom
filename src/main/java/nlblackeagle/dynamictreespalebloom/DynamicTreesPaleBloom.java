@@ -42,12 +42,11 @@ public class  DynamicTreesPaleBloom {
 }
 
 
-//todo: Check sounds of the mod, they should work for the DT compat too.
+//todo: Talk with others on what to do with: (With the team and I guess here too)
+// Pollenhead, natural growth? Make it always spew stuff around from a "Natural growth resin bulb" that has unlimited resin in it but when harvested poofs into a cloud of particles (unless harvested with a gardencrafted hoe perhaps? (nice progression)
+// Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
+// NightLight, natural growth, gives off light can hang from cave ceilings?
+
 //todo: weird root comes from sucker nodule tree, make this apparent
-//todo: growing a lot of trees seems to lag, run spark while doing this so we know what is causing it.
-//todo: make config option to disable all incense thorns and make the pale lung default. (Under RLCraft Dregora settings)
-// and I want this option to also remove all incense thorns crafting recipes and the JEI info board if possible.
-//todo: make pale lung also give movement speed debuff and something similar to weakness.
-//todo: check if entities die when in pale bloom weird roots
 
 

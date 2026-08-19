@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
  * the registry and localizes via the potion's own name, no separate tooltip fix is
  * needed - it'll show "Pale Lung" automatically once the NBT itself says so.
  */
-@Mixin(value = IncenseThornsNBTRecipe.class, remap = false)
+@Mixin(value = IncenseThornsNBTRecipe.class)
 public class IncenseThornsNBTRecipeMixin {
 
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)

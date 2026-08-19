@@ -68,7 +68,7 @@ public class PaleLungEntityMatcher {
                 default:
                     // Any other @word is treated as a modid filter.
                     ResourceLocation key = keyFor(entity);
-                    return key != null && key.getResourceDomain().equalsIgnoreCase(keyword);
+                    return key != null && key.getNamespace().equalsIgnoreCase(keyword);
             }
         }
 

@@ -10,16 +10,19 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid= DynamicTreesPaleBloom.MODID, name= DynamicTreesPaleBloom.NAME, dependencies = DynamicTreesPaleBloom.DEPENDENCIES)
+@Mod(
+		modid = DynamicTreesPaleBloom.MODID,
+		name = DynamicTreesPaleBloom.NAME,
+		dependencies = DynamicTreesPaleBloom.DEPENDENCIES,
+		version = DynamicTreesPaleBloom.VERSION
+)
 public class  DynamicTreesPaleBloom {
 	
 	public static final String MODID = "dynamictreespalebloom";
 	public static final String NAME = "Dynamic Trees for Pale Bloom";
+	public static final String VERSION = "1.0.0";
 	public static final String DEPENDENCIES = "required-after:" + ModConstants.DYNAMICTREES_LATEST
 			+ ";required-after:palebloom;required-after:fermiumbooter;required-after:geckolib3";
-	
-	@Mod.Instance
-	public static DynamicTreesPaleBloom instance;
 	
 	@SidedProxy(clientSide = "nlblackeagle.dynamictreespalebloom.proxy.ClientProxy", serverSide = "nlblackeagle.dynamictreespalebloom.proxy.CommonProxy") //com.
 	public static CommonProxy proxy;

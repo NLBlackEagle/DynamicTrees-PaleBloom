@@ -1,81 +1,120 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
+    id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
+    id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-
-version = "1.12.2-1.0.2"
+version = mod_version
+base.archivesName = "DynamicTreesPaleBloom"
 group = "nlblackeagle.dynamictreespalebloom"
-archivesBaseName = "DynamicTreesPaleBloom"
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
-    version = "1.12.2-14.23.5.2838"
-    runDir = "run"
-    mappings = "snapshot_20171003"
-}
+    mappings channel: mappings_channel, version: mappings_version
 
-compileJava {
-    dependsOn 'genSrgs'
-    dependsOn 'processResources'
-    options.compilerArgs += [
-        '-AreobfSrgFile=' + tasks.getByName('genSrgs').mcpToSrg,
-        '-AoutRefMapFile=' + file("$buildDir/resources/main/mixins.dynamictreespalebloom.refmap.json")
-    ]
+    runs {
+        client {
+            args "--username=NLBlackEagle"
+
+            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dmixin.hotSwap=true"
+            jvmArg "-Dmixin.checks.interfaces=true"
+            jvmArg "-Dmixin.debug.export=true"
+
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+
+            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dmixin.hotSwap=true"
+            jvmArg "-Dmixin.checks.interfaces=true"
+            jvmArg "-Dmixin.debug.export=true"
+
+            workingDirectory project.file('runServer')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
 }
 
 repositories {
-    mavenCentral()
-    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     flatDir { dirs 'libs' }
+
+    maven { url = 'https://www.cursemaven.com' }
+    maven { url = "https://maven.k-4u.nl" }
+    maven { url = 'https://maven.blamejared.com' }
 }
 
 dependencies {
-    deobfCompile "local:geckolib-forge-1.12.2:3.0.31"
-    deobfCompile "local:DynamicTrees-1.12.2:0.9.29"
-    deobfCompile "local:palebloom:1.0.0"
-    deobfCompile "local:defiledlands-1.12.2:1.4.3"
-    deobfCompile "local:Baubles-1.12:1.5.2"
-    deobfCompile "local:jei_1.12.2-4.16.1.1012"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    compileOnly "org.spongepowered:mixin:0.8.5"
-    compile "org.spongepowered:mixin:0.8.5:processor"
-    compileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
-    compile "io.github.llamalad7:mixinextras-common:0.4.1"
+    compileOnly "org.spongepowered:mixin:${mixin_version}"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
-    deobfCompile "local:`FermiumBooter:1.4.1"
+    implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
+
+    implementation fg.deobf("curse.maven:jei-238222:8623356")
+    implementation fg.deobf("curse.maven:dramatictrees-637540:8142559")
+    implementation fg.deobf("curse.maven:palebloom-1375465:7169494")
+    implementation fg.deobf("curse.maven:geckolib-388172:4020277")
+}
+
+mixin {
+    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+}
+
+fancyGradle {
+    patches {
+        resources
+        coremods
+        asm
+        mergetool
+    }
 }
 
 processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    var replaceProperties = [
+            'mod_id': mod_id,
+            'mod_name': mod_name,
+            'version': mod_version,
+            'mcversion': minecraft_version,
+            'mod_description': mod_description,
+            'mod_author': mod_author
+    ]
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
+    inputs.properties replaceProperties
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    filesMatching('mcmod.info') {
+        expand replaceProperties
     }
 }
 
 jar {
     manifest {
-        attributes(
-                'FMLCorePlugin': 'nlblackeagle.dynamictreespalebloom.DynamicTreesPaleBloomPlugin',
-                'FMLCorePluginContainsFMLMod': 'true',
-                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-                'ForceLoadAsMod': 'true'
-        )
+        def attr = [:]
+        attr['Specification-Title']         = mod_name
+        attr['Specification-Vendor']        = mod_author
+        attr['Specification-Version']       = '1'
+        attr['Implementation-Title']        = mod_name
+        attr['Implementation-Vendor']       = mod_author
+        attr['Implementation-Version']      = mod_version
+        attr['Implementation-Timestamp']    = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        attr['FMLCorePlugin']               = mixin_loader_class
+        attr['FMLCorePluginContainsFMLMod'] = 'true'
+        attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
+        attr['ForceLoadAsMod'] = gradle.startParameter.taskNames[0] != 'runClient' && gradle.startParameter.taskNames[0] != 'runServer'
+        attributes(attr)
     }
 }
+
+jar.finalizedBy('reobfJar')

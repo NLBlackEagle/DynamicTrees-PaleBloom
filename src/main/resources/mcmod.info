@@ -1,16 +1,15 @@
 [
 {
-  "modid": "dynamictreespalebloom",
-  "name": "Dynamic Trees for Pale Bloom",
-  "description": "Adds compatibilities between dynamic trees and Pale Bloom",
+  "modid": "${mod_id}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
-  "updateUrl": "",
-  "authorList": ["NLBlackEagle"],
+  "updateUrl": "https://www.curseforge.com/members/NLBlackEagle/projects",
+  "authorList": ${mod_author},
   "credits": "NLBlackEagle, Sir Squidly",
   "logoFile": "",
-  "screenshots": [],
   "dependencies": []
 }
 ]

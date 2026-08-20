@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -38,10 +39,11 @@ public class BlockDynamicLeavesMixin {
     );
 
     @Inject(method = "hasAdequateLight", at = @At("HEAD"), cancellable = true)
-    private void dynamictreespalebloom$allowUndergroundLeaves(IBlockState blockState, World world, ILeavesProperties leavesProperties, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private void dynamictreespalebloom$allowUndergroundLeaves(IBlockState blockState, World world, @Coerce Object leavesPropertiesObj, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.enableUndergroundGrowth) return;
 
+        ILeavesProperties leavesProperties = (ILeavesProperties) leavesPropertiesObj;
         TreeFamily family = leavesProperties.getTree();
         if (family == null) return;
 

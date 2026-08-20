@@ -5,7 +5,6 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import nlblackeagle.dynamictreespalebloom.ModContent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,15 +37,17 @@ public class BlockLeavesMixin {
             Method getProperties = self.getClass().getMethod("getProperties", IBlockState.class);
             Object properties = getProperties.invoke(self, stateIn);
 
+            Class<?> modContentClass = Class.forName("nlblackeagle.dynamictreespalebloom.ModContent");
+
             // Matches the real leafType/spawnChance values from each species'
             // actual BlockPaleLeaves constructor in Pale Bloom itself.
-            if (properties == ModContent.paleOakLeavesProperties) {
+            if (properties == modContentClass.getField("paleOakLeavesProperties").get(null)) {
                 leafType = 0;
                 spawnChance = 64;
-            } else if (properties == ModContent.paleBloomingOakLeavesProperties) {
+            } else if (properties == modContentClass.getField("paleBloomingOakLeavesProperties").get(null)) {
                 leafType = 1;
                 spawnChance = 64;
-            } else if (properties == ModContent.paleBirchLeavesProperties) {
+            } else if (properties == modContentClass.getField("paleBirchLeavesProperties").get(null)) {
                 leafType = 2;
                 spawnChance = 128;
             } else {

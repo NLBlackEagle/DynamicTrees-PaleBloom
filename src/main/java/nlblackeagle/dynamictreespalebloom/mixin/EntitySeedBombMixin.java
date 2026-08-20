@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  * any plain player-thrown "palebloom:seed_bomb" item, which also goes through this
  * same class).
  */
-@Mixin(value = EntitySeedBomb.class, remap = false)
+@Mixin(value = EntitySeedBomb.class)
 public abstract class EntitySeedBombMixin {
 
     @Shadow

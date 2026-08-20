@@ -1,5 +1,6 @@
 package nlblackeagle.dynamictreespalebloom.mixin;
 
+import com.ferreusveritas.dynamictrees.blocks.BlockBranch;
 import com.sirsquidly.palebloom.common.blocks.BlockCreakingHeart;
 import com.sirsquidly.palebloom.init.JTPGItems;
 import net.minecraft.block.Block;
@@ -26,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // point BEFORE any destruction happens (while the real blocks, with their
 // real NATURAL flag, are still intact), and drops the bonus item ourselves
 // if a natural heart is found - independent of DT's own drop list entirely.
-@Mixin(value = com.ferreusveritas.dynamictrees.blocks.BlockBranch.class, remap = false)
+@Mixin(value = BlockBranch.class)
 public class BlockBranchFellingMixin {
 
     @Inject(method = "futureBreak", at = @At("HEAD"))

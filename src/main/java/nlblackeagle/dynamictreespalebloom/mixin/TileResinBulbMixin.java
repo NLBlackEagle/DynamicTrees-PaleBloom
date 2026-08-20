@@ -41,7 +41,7 @@ import java.util.Random;
  * the original method and reimplements it identically, just with XZ correctly
  * governing X/Z and Y governing Y.
  */
-@Mixin(value = TileResinBulb.class, remap = false)
+@Mixin(value = TileResinBulb.class)
 public abstract class TileResinBulbMixin extends TileEntity {
 
     @Shadow

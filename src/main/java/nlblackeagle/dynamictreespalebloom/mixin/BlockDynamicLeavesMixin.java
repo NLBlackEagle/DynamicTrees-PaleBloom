@@ -28,7 +28,7 @@ import java.util.List;
 // belongs to one of our four target families - our three Pale Bloom
 // species, plus vanilla Dark Oak specifically (not every Dynamic Trees
 // species globally).
-@Mixin(value = BlockDynamicLeaves.class)
+@Mixin(value = BlockDynamicLeaves.class, remap = false)
 public class BlockDynamicLeavesMixin {
 
     private static final List<String> TARGET_FAMILIES = Arrays.asList(

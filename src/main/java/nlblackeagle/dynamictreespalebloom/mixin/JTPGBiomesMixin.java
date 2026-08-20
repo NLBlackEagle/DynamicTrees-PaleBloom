@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(value = JTPGBiomes.class)
+@Mixin(value = JTPGBiomes.class, remap = false)
 public class JTPGBiomesMixin {
 
     @ModifyConstant(method = "registerBiomes", constant = @Constant(intValue = 0, ordinal = 0))

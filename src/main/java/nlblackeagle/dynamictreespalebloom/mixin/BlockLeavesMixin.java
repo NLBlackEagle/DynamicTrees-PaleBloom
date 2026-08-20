@@ -21,7 +21,7 @@ import java.util.Random;
 // happens once FML's mod-discovery phase runs, which is later). Every
 // cross-mod touchpoint below goes through reflection instead, deferring
 // resolution to actual method execution time, well after all mods are loaded.
-@Mixin(value = BlockLeaves.class)
+@Mixin(BlockLeaves.class)
 public class BlockLeavesMixin {
 
     @Inject(method = "randomDisplayTick", at = @At("HEAD"))

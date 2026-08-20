@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
-@Mixin(value = BlockIncenseThorn.class)
+@Mixin(value = BlockIncenseThorn.class, remap = false)
 public class BlockIncenseThornMixin {
 
     @Inject(method = {"harvestBlock", "func_180657_a"}, at = @At("HEAD"), cancellable = true)

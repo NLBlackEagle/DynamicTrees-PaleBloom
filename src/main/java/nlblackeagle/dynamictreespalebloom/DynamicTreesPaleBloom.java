@@ -47,10 +47,7 @@ public class  DynamicTreesPaleBloom {
 // Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
 // NightLight, natural growth, gives off light can hang from cave ceilings?
 
-//todo: fix remap = false instances, remove those and check for errors then add remap back to required fields.
-//todo: add movement debug to pale lung potion effect
 //todo: Test pale lung dmg effect to SRP
-//todo: add potion recipes for pale lung potions
-//todo: remove cloak from reaping willow drops and add special item to reaping willow drop.
+
 
 

@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  * text entirely via "dregora.<original key>" entries instead of needing to keep
  * shadowing Pale Bloom's exact original key names.
  */
-@Mixin(value = CompatJEI.class)
+@Mixin(value = CompatJEI.class, remap = false)
 public class CompatJEIMixin {
 
     @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.incense_thorns.desc"))

@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * {@code setPotion(MobEffects.POISON)}, or this addon's own Seed Bomb flora scatter
  * calling {@code setPotion(...)} directly.
  */
-@Mixin(value = TileIncenseThorn.class)
+@Mixin(value = TileIncenseThorn.class, remap = false)
 public abstract class TileIncenseThornMixin {
 
     @Shadow

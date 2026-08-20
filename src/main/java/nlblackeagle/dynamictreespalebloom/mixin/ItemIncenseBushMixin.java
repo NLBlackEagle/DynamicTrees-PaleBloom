@@ -30,7 +30,7 @@ import java.util.List;
  * (Pale Lung or otherwise) is left completely alone, so the original method still
  * handles that case normally.
  */
-@Mixin(value = ItemIncenseBush.class)
+@Mixin(value = ItemIncenseBush.class, remap = false)
 public class ItemIncenseBushMixin {
 
     @Inject(method = "func_77624_a", at = @At("HEAD"), cancellable = true)

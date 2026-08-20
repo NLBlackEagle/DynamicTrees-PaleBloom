@@ -115,6 +115,11 @@ public class ForgeConfigHandler {
         @Config.Name("Respiration Grants Immunity")
         public boolean respirationGrantsImmunity = true;
 
+        @Config.Comment("Movement speed multiplier applied while affected by Pale Lung. 1.0 = no change, 1.5 = 50% faster, 0.65 = 35% slower (default).")
+        @Config.Name("Movement Speed Multiplier")
+        @Config.RangeDouble(min = 0.1, max = 3.0)
+        public double movementSpeedMultiplier = 0.65;
+
         @Config.Comment("Replace the poison effect Pollenhead and Incense Thorns give off (their area-effect aura) with Pale Lung instead.")
         @Config.Name("Replace Pollenhead & Incense Thorns Poison")
         public boolean replacePollenheadAndIncenseThornsPoison = true;
@@ -307,6 +312,14 @@ public class ForgeConfigHandler {
         @Config.Comment("Maximum light level for Reaping Willow to spawn")
         @Config.Name("Reaping Willow Max Light Level")
         public int reapingWillowMaxLightLevel = 15;
+
+        @Config.Comment("Enable extra item drops from Reaping Willow, in addition to its normal palebloom loot table (2x Amber Valve, 38-50x Pale Oak Log).")
+        @Config.Name("Enable Reaping Willow Extra Drops")
+        public boolean enableReapingWillowExtraDrops = true;
+
+        @Config.Comment("Extra item registry names (e.g. \"palebloom:live_root\") Reaping Willow drops, one of each, on death, in addition to its normal loot table.")
+        @Config.Name("Reaping Willow Extra Drops")
+        public String[] reapingWillowExtraDrops = {"palebloom:live_root"};
 
         @Config.Comment("Removes all Incense Thorns crafting recipes (every potion flavour - poison, speed, strength, weakness, regeneration, slowness). The item itself stays visible/browsable in JEI, but since there's no recipe left to find, JEI's own \"how to craft this\" info tab for it ends up empty on its own - no separate JEI-hiding needed. Intended to make Pollenhead's Pale Lung aura the sole/default \"aura plant\" experience instead of having two overlapping sources. Does NOT currently stop wild Incense Thorns that already naturally spawn in the world from being found/harvested.")
         @Config.Name("Disable Incense Thorns")

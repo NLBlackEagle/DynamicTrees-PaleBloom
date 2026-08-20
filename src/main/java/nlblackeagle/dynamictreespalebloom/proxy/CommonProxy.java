@@ -8,6 +8,7 @@ import nlblackeagle.dynamictreespalebloom.event.PaleLungImmunityHandler;
 import nlblackeagle.dynamictreespalebloom.event.PaleLungSeedBombTickHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowAggressionHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowDeathHandler;
+import nlblackeagle.dynamictreespalebloom.event.ReapingWillowDropsHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowSpawnHandler;
 import nlblackeagle.dynamictreespalebloom.event.RLCraftDregoraDisableHandler;
 import nlblackeagle.dynamictreespalebloom.event.TreeGenCancelPaleGardenEventHandler;
@@ -22,6 +23,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ReapingWillowAggressionHandler());
         MinecraftForge.EVENT_BUS.register(new ReapingWillowSpawnHandler());
         MinecraftForge.EVENT_BUS.register(new ReapingWillowDeathHandler());
+        MinecraftForge.EVENT_BUS.register(new ReapingWillowDropsHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungDeathHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungImmunityHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungSeedBombTickHandler());

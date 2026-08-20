@@ -15,12 +15,12 @@ tile.palebloom.peeping_birch_leaves.name=Peeping Birch Leaves
 
 effect.dynamictreespalebloom.pale_lung=Pale Lung
 potion.effect.pale_lung=Potion of Pale Lung
-potion.effect.pale_lung.splash=Splash Potion of Pale Lung
-potion.effect.pale_lung.lingering=Lingering Potion of Pale Lung
+splash_potion.effect.pale_lung=Splash Potion of Pale Lung
+lingering_potion.effect.pale_lung=Lingering Potion of Pale Lung
 
 jei.palebloom.incense_thorns.desc=Incense Thorns burn resin and gives nearby players and mobs the pale lung effect at night.\n\nAt Night, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing mist and giving the pale lung potion effect to all entities within a 10x10x10 block range. Stored Resin is burnt by 1 every 6 seconds awake (or 16 if no Effect is attached).
 jei.palebloom.pollenhead.desc=Pollenheads convert Resin into clouds of pollen, giving nearby players and mobs the pale lung effect while converting normal plants into pale counterparts, at Night.\n\nAt Night, becomes Lucid, seeking Resin from a Resin Bulb. Upon collecting Resin it becomes Awake, producing pollen and giving the pale lung effect to all entities within a 8x8x8 block range.\n\nPlants within this same range have a chance to be converted into pale counterparts, at the cost of 8 Resin. Stored Resin is spent by 1 every 10 seconds awake.
-jei.dynamictreespalebloom.live_root.desc=Weird roots are harvested from sucker nodules which sometimes grow beneath Blooming Pale Oak trees.
+jei.dynamictreespalebloom.live_root.desc=Weird roots are harvested from sucker nodules which sometimes grow beneath Blooming Pale Oak trees or as drops from the Reaping Willow.
 
 # "dregora." versions of the same four JEI info-board keys - only used when "Enable
 # Dregora Lang Keys" is on (see CompatJEIMixin). Defaulted to match the text above (or

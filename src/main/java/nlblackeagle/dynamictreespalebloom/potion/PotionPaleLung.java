@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -25,10 +26,21 @@ public class PotionPaleLung extends Potion {
     private static final ResourceLocation ICON_TEXTURE =
             new ResourceLocation(DynamicTreesPaleBloom.MODID, "textures/effects/pale_lung.png");
 
+    // Fixed UUID so the modifier can be reliably added/removed, same convention as vanilla's potions.
+    private static final String MOVEMENT_SPEED_MODIFIER_UUID = "d3942663-9ac3-4289-a0df-5b26758b8350";
+
     public PotionPaleLung() {
         // isBadEffect = true, liquid/particle colour = a pale, sickly grey-green.
         super(true, 0xB9C2B4);
         this.setPotionName("effect.dynamictreespalebloom.pale_lung");
+
+        // Operation 2 applies as base * (1 + amount), so amount = (multiplier - 1) lands exactly on the
+        // configured multiplier (e.g. 0.65 -> -0.35 -> base * 0.65).
+        double movementSpeedMultiplier = ForgeConfigHandler.paleLung.movementSpeedMultiplier;
+        if (movementSpeedMultiplier != 1.0) {
+            this.registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED,
+                    MOVEMENT_SPEED_MODIFIER_UUID, movementSpeedMultiplier - 1.0, 2);
+        }
     }
 
     @Override

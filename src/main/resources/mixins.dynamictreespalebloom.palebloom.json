@@ -12,6 +12,7 @@
     "BlockPaleHangingMossMixin",
     "BlockBranchFellingMixin",
     "BlockIncenseThornMixin",
+    "BlockNightlightMixin",
     "TileIncenseThornMixin",
     "EntitySeedBombMixin",
     "TilePollenheadMixin",

@@ -37,6 +37,9 @@ public abstract class TileIncenseThornMixin {
     @Shadow
     private Potion potionType;
 
+    @Shadow
+    public abstract void setPotion(Potion potion);
+
     @Inject(method = "setPotion", at = @At("HEAD"), cancellable = true)
     private void dynamictreespalebloom$swapPoisonForPaleLung(Potion potion, CallbackInfo ci) {
         if (!ForgeConfigHandler.featureToggles.enablePaleLung) {
@@ -52,6 +55,32 @@ public abstract class TileIncenseThornMixin {
         if (potion == MobEffects.POISON) {
             this.potionType = ModPotions.paleLung;
             ci.cancel();
+        }
+    }
+
+    /**
+     * Decompiling the shipped palebloom-1.0.0.jar shows setPotion() is called from
+     * exactly one place in the whole mod - BlockIncenseThorn#onBlockPlacedBy, and only
+     * when the placed item stack has a "potion" NBT tag (i.e. was crafted via one of
+     * the potion-flavour recipes). Naturally worldgen-spawned Incense Thorns never go
+     * through that path at all, so their potionType field is just never assigned -
+     * effectNearbyEntities() reads it directly and returns immediately when it's null,
+     * meaning wild ones sit there completely inert (no aura, poison or otherwise)
+     * regardless of any of this addon's settings.
+     * <p>
+     * Incense Thorns is meant to work like a naturally occurring hazard plant, so this
+     * defaults any Incense Thorns still missing a potion to Poison the moment it first
+     * tries to run its aura - routed through setPotion() above so the existing Pale
+     * Lung swap (and any future logic added there) still applies on top of it.
+     */
+    @Inject(method = "effectNearbyEntities", at = @At("HEAD"))
+    private void dynamictreespalebloom$defaultToPoisonWhenUnset(CallbackInfo ci) {
+        if (!ForgeConfigHandler.miscellaneous.defaultUnsetIncenseThornsToPoison) {
+            return;
+        }
+
+        if (this.potionType == null) {
+            this.setPotion(MobEffects.POISON);
         }
     }
 }

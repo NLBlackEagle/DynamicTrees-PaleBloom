@@ -98,6 +98,51 @@ public class ForgeConfigHandler {
         @Config.Name("Pale Pumpkin Generation Multiplier")
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double palePumpkinChance = 1.0;
+
+        @Config.Comment("Attempts per chunk to place a hanging Pale Hanging Moss + Nightlight strand from a cave ceiling, in the Pale Garden. Each attempt scans one random column once (not a random 3D search), so raising this scales cost linearly and predictably. 0 = disabled.")
+        @Config.Name("Cave Hanging Moss Attempts Per Chunk")
+        @Config.RangeInt(min = 0, max = 32)
+        public int caveHangingMossAttemptsPerChunk = 20;
+
+        @Config.Comment("Minimum Y level a cave hanging moss strand's anchor point can attach at.")
+        @Config.Name("Cave Hanging Moss Min Y")
+        @Config.RangeInt(min = 0, max = 255)
+        public int caveHangingMossMinY = 5;
+
+        @Config.Comment("Maximum Y level a cave hanging moss strand's anchor point can attach at.")
+        @Config.Name("Cave Hanging Moss Max Y")
+        @Config.RangeInt(min = 0, max = 255)
+        public int caveHangingMossMaxY = 60;
+
+        @Config.Comment("Maximum combined light level (0-15) the anchor point can have for a cave hanging moss strand to attach there.")
+        @Config.Name("Cave Hanging Moss Max Light Level")
+        @Config.RangeInt(min = 0, max = 15)
+        public int caveHangingMossMaxLightLevel = 12;
+
+        @Config.Comment("Minimum length (growth extensions below the anchor Nightlight) for a cave hanging moss strand. 0 = just the anchor Nightlight, no moss trail.")
+        @Config.Name("Cave Hanging Moss Min Length")
+        @Config.RangeInt(min = 0, max = 32)
+        public int caveHangingMossMinLength = 0;
+
+        @Config.Comment("Maximum length (growth extensions below the anchor Nightlight) for a cave hanging moss strand. Growth silently stops early if it runs out of clear vertical space, so the actual final length can end up shorter than this.")
+        @Config.Name("Cave Hanging Moss Max Length")
+        @Config.RangeInt(min = 0, max = 32)
+        public int caveHangingMossMaxLength = 12;
+
+        @Config.Comment("Minimum clear space (in blocks) required between a cave hanging moss strand's anchor and the floor below it. Anything with less headroom than this is rejected outright.")
+        @Config.Name("Cave Hanging Moss Min Floor Clearance")
+        @Config.RangeInt(min = 0, max = 32)
+        public int caveHangingMossMinFloorClearance = 1;
+
+        @Config.Comment("Preferred clear space (in blocks) between a cave hanging moss strand's anchor and the floor below it. Clearance at or below this always has full chance to spawn; clearance beyond it gets progressively rarer via \"Cave Hanging Moss Floor Clearance Falloff\", never impossible.")
+        @Config.Name("Cave Hanging Moss Preferred Floor Clearance")
+        @Config.RangeInt(min = 0, max = 32)
+        public int caveHangingMossPreferredFloorClearance = 2;
+
+        @Config.Comment("Chance multiplier applied per block of floor clearance beyond the preferred amount - e.g. 0.5 means half as likely for each extra block past preferred (so 4 blocks = 50% as likely as 3, 5 blocks = 25%, etc). Never reaches exactly 0, so tall clearances stay possible, just increasingly rare.")
+        @Config.Name("Cave Hanging Moss Floor Clearance Falloff")
+        @Config.RangeDouble(min = 0.01, max = 1.0)
+        public double caveHangingMossFloorClearanceFalloff = 0.8;
     }
 
     @Config.Comment("Pale Lung Potion Options")
@@ -251,6 +296,14 @@ public class ForgeConfigHandler {
         @Config.Comment("Prevents Sucker Roots from damaging entities that walk into them (the taller, 2-layer variant normally deals 1 damage per second). Movement slowdown from walking through them still applies either way - this only removes the damage. Off by default, meaning damage still happens unless you enable this.")
         @Config.Name("Disable Sucker Roots Damage")
         public boolean disableSuckerRootsDamage = false;
+
+        @Config.Comment("Fixes a real Pale Bloom bug: Incense Thorns only ever get a potion effect when a player places a crafted, potion-flavoured item - naturally worldgen-spawned ones (and any other Incense Thorns that end up with no potion set) are left completely inert, no aura at all. This makes any such Incense Thorns default to Poison instead the first time it would try to apply its aura, so wild ones actually behave like the hazard plant they're meant to be. Becomes Pale Lung instead of Poison under the same conditions as \"Replace Pollenhead & Incense Thorns Poison\".")
+        @Config.Name("Default Unset Incense Thorns To Poison")
+        public boolean defaultUnsetIncenseThornsToPoison = true;
+
+        @Config.Comment("Fixes a real Pale Bloom crash: Nightlight hangs from a ceiling (its canBlockStay check requires solid ground, or Pale Hanging Moss, directly above it), and BlockNightlight#updateTick can legitimately break it into air right there if that support is gone - but then unconditionally calls preformSwapping() anyway regardless, which crashes the whole world tick trying to read a property off the now-air block. This makes preformSwapping bail out harmlessly instead whenever the block it's called on turns out not to actually be a Nightlight any more.")
+        @Config.Name("Fix Nightlight Removal Crash")
+        public boolean fixNightlightRemovalCrash = true;
     }
 
     @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience.")

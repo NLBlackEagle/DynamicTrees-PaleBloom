@@ -12,6 +12,7 @@ import nlblackeagle.dynamictreespalebloom.event.ReapingWillowDropsHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowSpawnHandler;
 import nlblackeagle.dynamictreespalebloom.event.RLCraftDregoraDisableHandler;
 import nlblackeagle.dynamictreespalebloom.event.TreeGenCancelPaleGardenEventHandler;
+import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenCaveHangingMoss;
 import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenPalePetals;
 import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenPalePumpkin;
 import nlblackeagle.dynamictreespalebloom.worldgen.UndergroundSoilRegistration;
@@ -33,6 +34,7 @@ public class CommonProxy {
         GameRegistry.registerWorldGenerator(new WorldGenPalePetals(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenPalePumpkin(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenUndergroundTrees(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenCaveHangingMoss(), 5);
     }
 
     public void init() {

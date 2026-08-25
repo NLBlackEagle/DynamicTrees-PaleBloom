@@ -6,8 +6,9 @@
       "subterranean": true,
       "species" : {
         "random" : {
-          "dynamictreespalebloom:pale_oak" : 70,
+          "dynamictreespalebloom:pale_oak" : 65,
           "dynamictrees:darkoak" : 10,
+
           "dynamictreespalebloom:pale_birch" : 20
         }
       },

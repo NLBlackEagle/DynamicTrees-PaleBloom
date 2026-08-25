@@ -8,7 +8,7 @@
         "random" : {
           "dynamictreespalebloom:pale_oak" : 65,
           "dynamictrees:darkoak" : 10,
-
+          "dynamictreespalebloom:pale_blooming" : 5,
           "dynamictreespalebloom:pale_birch" : 20
         }
       },

@@ -5,6 +5,7 @@ import com.ferreusveritas.dynamictrees.ModRecipes;
 import com.ferreusveritas.dynamictrees.api.TreeRegistry;
 import com.ferreusveritas.dynamictrees.api.WorldGenRegistry.BiomeDataBasePopulatorRegistryEvent;
 import com.ferreusveritas.dynamictrees.api.client.ModelHelper;
+import com.ferreusveritas.dynamictrees.api.events.PopulateDataBaseEvent;
 import com.ferreusveritas.dynamictrees.api.treedata.ILeavesProperties;
 import com.ferreusveritas.dynamictrees.blocks.BlockRooty;
 import com.ferreusveritas.dynamictrees.blocks.LeavesPaging;
@@ -13,12 +14,15 @@ import com.ferreusveritas.dynamictrees.items.DendroPotion.DendroPotionType;
 import com.ferreusveritas.dynamictrees.systems.DirtHelper;
 import com.ferreusveritas.dynamictrees.trees.Species;
 import com.ferreusveritas.dynamictrees.trees.TreeFamily;
+import com.ferreusveritas.dynamictrees.worldgen.BiomeDataBase;
+import com.ferreusveritas.dynamictrees.worldgen.BiomeDataBasePopulatorJson;
 import com.sirsquidly.palebloom.common.blocks.base.BlockJTPGSapling;
 import com.sirsquidly.palebloom.init.JTPGBlocks;
 import net.minecraft.item.ItemBlock;
 import nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart;
 import nlblackeagle.dynamictreespalebloom.trees.TreePaleOak;
 import nlblackeagle.dynamictreespalebloom.worldgen.BiomeDataBasePopulator;
+import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenUndergroundTrees;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -59,6 +63,22 @@ public class ModContent {
     @SubscribeEvent
     public static void registerDataBasePopulators(final BiomeDataBasePopulatorRegistryEvent event) {
         event.register(new BiomeDataBasePopulator());
+    }
+
+    // PopulateDataBaseEvent fires right after DT populates its own shared/default
+    // BiomeDataBase from the collected populators, but BEFORE
+    // BiomeDataBasePopulatorJson.cleanup() wipes the static selector/applier
+    // property maps ("name", "subterranean", "species", etc.) those JSON files
+    // depend on. WorldGenUndergroundTrees' standalone underground BiomeDataBase
+    // must be populated here (not lazily on first chunk-gen call, which happens
+    // long after cleanup() has already emptied those maps - every property in
+    // underground.json would silently read back as "undefined").
+    @SubscribeEvent
+    public static void onPopulateDataBase(final PopulateDataBaseEvent event) {
+        BiomeDataBase undergroundDbase = new BiomeDataBase();
+        new BiomeDataBasePopulatorJson(new ResourceLocation(DynamicTreesPaleBloom.MODID, "worldgen/underground.json"))
+                .populate(undergroundDbase);
+        WorldGenUndergroundTrees.setUndergroundDataBase(undergroundDbase);
     }
 
     @SubscribeEvent

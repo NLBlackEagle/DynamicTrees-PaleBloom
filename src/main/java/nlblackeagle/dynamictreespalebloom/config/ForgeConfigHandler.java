@@ -277,6 +277,11 @@ public class ForgeConfigHandler {
         @Config.Name("Enable Underground Growth")
         public boolean enableUndergroundGrowth = true;
 
+        @Config.Comment("Chance per chunk, in the Pale Garden, for a worldgen pass to attempt spawning cave-grown Pale/Dark Oak trees underground (in addition to the normal surface trees). Has no effect unless \"Enable Underground Growth\" is also true - without it the leaves would just die from lack of light shortly after generating. 0.0 = never, 1.0 = attempt every chunk (matches surface generation, which has no per-chunk gate at all).")
+        @Config.Name("Underground Tree Spawn Chance")
+        @Config.RangeDouble(min = 0.0, max = 1.0)
+        public double undergroundTreeSpawnChance = 1.0;
+
         @Config.Comment("Makes Reaping Willow always aggressive toward players on sight.")
         @Config.Name("Reaping Willow Always Aggressive")
         public boolean reapingWillowAggressive = true;

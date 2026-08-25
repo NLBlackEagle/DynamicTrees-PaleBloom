@@ -1,0 +1,18 @@
+[
+  {
+    "__comment" : "Cave-grown trees beneath the Pale Garden. Standalone database (see WorldGenUndergroundTrees) - marking this subterranean here does NOT affect the normal surface Pale Garden generation in default.json, which is a separate BiomeDataBase entirely.",
+    "select" : { "name": "palebloom:pale_garden" },
+    "apply" : {
+      "subterranean": true,
+      "species" : {
+        "random" : {
+          "dynamictreespalebloom:pale_oak" : 70,
+          "dynamictrees:darkoak" : 10,
+          "dynamictreespalebloom:pale_birch" : 20
+        }
+      },
+      "density" : [ 0.8 ],
+      "chance" : 1
+    }
+  }
+]

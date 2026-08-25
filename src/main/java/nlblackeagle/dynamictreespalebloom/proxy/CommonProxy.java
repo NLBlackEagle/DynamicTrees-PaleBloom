@@ -14,6 +14,8 @@ import nlblackeagle.dynamictreespalebloom.event.RLCraftDregoraDisableHandler;
 import nlblackeagle.dynamictreespalebloom.event.TreeGenCancelPaleGardenEventHandler;
 import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenPalePetals;
 import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenPalePumpkin;
+import nlblackeagle.dynamictreespalebloom.worldgen.UndergroundSoilRegistration;
+import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenUndergroundTrees;
 
 public class CommonProxy {
 
@@ -30,10 +32,12 @@ public class CommonProxy {
         MinecraftForge.TERRAIN_GEN_BUS.register(new TreeGenCancelPaleGardenEventHandler());
         GameRegistry.registerWorldGenerator(new WorldGenPalePetals(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenPalePumpkin(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenUndergroundTrees(), 5);
     }
 
     public void init() {
         ReapingWillowSpawnHandler.registerSpawns();
+        UndergroundSoilRegistration.register();
     }
 
     public void postInit() {

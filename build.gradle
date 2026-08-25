@@ -26,6 +26,7 @@ minecraft {
 
 compileJava {
     dependsOn 'genSrgs'
+    dependsOn 'processResources'
     options.compilerArgs += [
         '-AreobfSrgFile=' + tasks.getByName('genSrgs').mcpToSrg,
         '-AoutRefMapFile=' + file("$buildDir/resources/main/mixins.dynamictreespalebloom.refmap.json")

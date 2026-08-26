@@ -9,12 +9,14 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
 import nlblackeagle.dynamictreespalebloom.potion.ModPotions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -97,5 +99,25 @@ public abstract class TilePollenheadMixin extends TileEntity {
                 WorldPaleGarden.convertCreeperToPale(this.world, entity);
             }
         }
+    }
+
+    /**
+     * Same underlying issue as TileIncenseThornMixin's equivalent redirect: Pollenhead's
+     * own tick method assigns isAwake straight from WorldPaleGarden.isNight(world) (a
+     * pure world-time check, confirmed via decompile - no light level or sky visibility
+     * involved), so a Pollenhead sitting in a cave never runs its poison/Pale Lung aura
+     * during the day no matter how dark it actually is down there. This redirects that
+     * call to also treat "no sky light reaches this position" as night, when the
+     * "Awaken Underground During Day" toggle is on.
+     */
+    @Redirect(method = {"update", "func_73660_a"}, at = @At(value = "INVOKE", target = "Lcom/sirsquidly/palebloom/common/world/WorldPaleGarden;isNight(Lnet/minecraft/world/World;)Z"))
+    private boolean dynamictreespalebloom$isNightOrUndergroundDay(World world) {
+        if (WorldPaleGarden.isNight(world)) {
+            return true;
+        }
+        if (!ForgeConfigHandler.paleLung.awakenUndergroundDuringDay) {
+            return false;
+        }
+        return !world.canSeeSky(this.pos);
     }
 }

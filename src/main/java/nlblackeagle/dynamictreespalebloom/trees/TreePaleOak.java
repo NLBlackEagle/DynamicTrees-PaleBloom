@@ -47,6 +47,7 @@ public class TreePaleOak extends TreeFamily {
             addGenFeature(new FeatureGenCreakingHeart(
                     (float) ForgeConfigHandler.paleOak.creakingHeartGrowthChance,
                     (float) ForgeConfigHandler.paleOak.creakingHeartWorldgenChance,
+                    (float) ForgeConfigHandler.paleOak.creakingHeartUndergroundChance,
                     ForgeConfigHandler.paleOak.creakingHeartMinTrunkRadius,
                     16));
             addGenFeature(new FeatureGenHangingMoss((float) ForgeConfigHandler.paleOak.hangingMossChance)); // Worldgen-only, per-leaf chance

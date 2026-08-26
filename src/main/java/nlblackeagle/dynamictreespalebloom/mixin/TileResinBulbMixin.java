@@ -2,6 +2,7 @@ package nlblackeagle.dynamictreespalebloom.mixin;
 
 import com.sirsquidly.palebloom.common.blocks.tileentity.TileResinBulb;
 import com.sirsquidly.palebloom.common.world.WorldPaleGarden;
+import com.sirsquidly.palebloom.config.ConfigCache;
 import com.sirsquidly.palebloom.config.ConfigParser;
 import com.sirsquidly.palebloom.init.JTPGSounds;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
@@ -40,6 +42,11 @@ import java.util.Random;
  * names ("XZ" = horizontal, "Y" = vertical). "Fix Resin Bulb Search Area Bug" cancels
  * the original method and reimplements it identically, just with XZ correctly
  * governing X/Z and Y governing Y.
+ * <p>
+ * 3) "Creaking Heart Resin Charge Multiplier" scales tryActiveHeartHarvest's resin
+ * grant (ConfigCache.rsnBlb_creakingHeartResinReap, Pale Bloom's own config value) by
+ * redirecting the field read itself, so a successful nightly charge is worth more
+ * without touching the search radius, interval, or the daytime harvest amount.
  */
 @Mixin(value = TileResinBulb.class, remap = false)
 public abstract class TileResinBulbMixin extends TileEntity {
@@ -80,7 +87,15 @@ public abstract class TileResinBulbMixin extends TileEntity {
         return 8;
     }
 
-    @ModifyConstant(method = "func_73660_a", constant = @Constant(longValue = 300L))
+    // Redirects the field read itself (rather than wrapping setStoredResin, whose
+    // argument is already the post-min()-clamped total) so the multiplier scales just
+    // the reap amount, leaving the max-resin clamp it feeds into untouched.
+    @Redirect(method = "tryActiveHeartHarvest", at = @At(value = "FIELD", target = "Lcom/sirsquidly/palebloom/config/ConfigCache;rsnBlb_creakingHeartResinReap:I"))
+    private int dynamictreespalebloom$buffCreakingHeartResinReap() {
+        return (int) Math.round(ConfigCache.rsnBlb_creakingHeartResinReap * ForgeConfigHandler.miscellaneous.creakingHeartResinChargeMultiplier);
+    }
+
+    @ModifyConstant(method = {"update", "func_73660_a"}, constant = @Constant(longValue = 300L))
     private long dynamictreespalebloom$slowInterval(long original) {
         if (!ForgeConfigHandler.miscellaneous.optimizeResinBulbHeartSearch) {
             return original;

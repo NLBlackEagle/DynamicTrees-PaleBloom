@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import nlblackeagle.dynamictreespalebloom.ModContent;
 import nlblackeagle.dynamictreespalebloom.blocks.BlockBranchCreakingHeart;
+import nlblackeagle.dynamictreespalebloom.worldgen.WorldGenUndergroundTrees;
 
 import java.util.List;
 
@@ -19,12 +20,14 @@ public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeatur
 
     private final float chance;
     private final float genChance;
+    private final float undergroundGenChance;
     private final int minTrunkRadius;
     private final int searchHeight;
 
-    public FeatureGenCreakingHeart(float chance, float genChance, int minTrunkRadius, int searchHeight) {
+    public FeatureGenCreakingHeart(float chance, float genChance, float undergroundGenChance, int minTrunkRadius, int searchHeight) {
         this.chance = chance;
         this.genChance = genChance;
+        this.undergroundGenChance = undergroundGenChance;
         this.minTrunkRadius = minTrunkRadius;
         this.searchHeight = searchHeight;
     }
@@ -41,7 +44,9 @@ public class FeatureGenCreakingHeart implements IPostGrowFeature, IPostGenFeatur
     @Override
     public boolean postGeneration(World world, BlockPos rootPos, Species species, Biome biome, int radius, List<BlockPos> endPoints, SafeChunkBounds safeBounds, IBlockState initialDirtState) {
         if (world.isRemote) return false;
-        if (world.rand.nextFloat() >= genChance) return false;
+
+        float effectiveChance = WorldGenUndergroundTrees.isGeneratingUnderground() ? undergroundGenChance : genChance;
+        if (world.rand.nextFloat() >= effectiveChance) return false;
         // Worldgen trees are placed fully-grown in one pass, so the trunk is
         // already complete by the time this runs - safe to search immediately.
         // This path only ever fires for actual worldgen-generated trees, so

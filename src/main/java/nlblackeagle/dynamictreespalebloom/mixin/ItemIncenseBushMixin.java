@@ -33,7 +33,7 @@ import java.util.List;
 @Mixin(value = ItemIncenseBush.class, remap = false)
 public class ItemIncenseBushMixin {
 
-    @Inject(method = "func_77624_a", at = @At("HEAD"), cancellable = true)
+    @Inject(method = {"addInformation", "func_77624_a"}, at = @At("HEAD"), cancellable = true)
     private void dynamictreespalebloom$noEffectShowsPaleLung(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag, CallbackInfo ci) {
         if (!ForgeConfigHandler.featureToggles.enablePaleLung) {
             return;

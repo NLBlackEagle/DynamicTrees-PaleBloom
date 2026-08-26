@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * BlockSuckerRoots#onEntityWalk (confirmed by decompiling the shipped
+ * BlockSuckerRoots#onEntityCollidedWithBlock (confirmed by decompiling the shipped
  * palebloom-1.0.0.jar) does two separate things to entities standing in it: slows
  * their movement, and - only for the taller 2-layer variant, once per second - damages
  * them via a single {@code entityIn.attackEntityFrom(DamageSource.CACTUS, 1.0F)} call.
@@ -21,7 +21,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = BlockSuckerRoots.class, remap = false)
 public class BlockSuckerRootsMixin {
 
-    @Redirect(method = "func_180634_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z"))
+    // target is Entity#attackEntityFrom(DamageSource, float) - func_70097_a here since
+    // @At's target descriptor is a single fixed string with no readable-name fallback
+    // the way method = {...} arrays get on the injection itself.
+    @Redirect(method = {"onEntityCollidedWithBlock", "func_180634_a"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z"))
     private boolean dynamictreespalebloom$maybeSkipDamage(Entity entity, DamageSource source, float amount) {
         if (ForgeConfigHandler.miscellaneous.disableSuckerRootsDamage) {
             return false;

@@ -57,6 +57,7 @@ public class TreeBloomingPaleOak extends TreeFamily {
             addGenFeature(new FeatureGenCreakingHeart(
                     (float) ForgeConfigHandler.bloomingPaleOak.creakingHeartGrowthChance,
                     (float) ForgeConfigHandler.bloomingPaleOak.creakingHeartWorldgenChance,
+                    (float) ForgeConfigHandler.bloomingPaleOak.creakingHeartUndergroundChance,
                     ForgeConfigHandler.bloomingPaleOak.creakingHeartMinTrunkRadius,
                     16));
             addGenFeature(suckerRootsFeature); // worldgen path (postGeneration)

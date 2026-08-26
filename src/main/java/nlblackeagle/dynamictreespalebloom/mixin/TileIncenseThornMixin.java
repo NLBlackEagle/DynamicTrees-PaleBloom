@@ -1,14 +1,18 @@
 package nlblackeagle.dynamictreespalebloom.mixin;
 
 import com.sirsquidly.palebloom.common.blocks.tileentity.TileIncenseThorn;
+import com.sirsquidly.palebloom.common.world.WorldPaleGarden;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import nlblackeagle.dynamictreespalebloom.config.ForgeConfigHandler;
 import nlblackeagle.dynamictreespalebloom.potion.ModPotions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -32,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * calling {@code setPotion(...)} directly.
  */
 @Mixin(value = TileIncenseThorn.class, remap = false)
-public abstract class TileIncenseThornMixin {
+public abstract class TileIncenseThornMixin extends TileEntity {
 
     @Shadow
     private Potion potionType;
@@ -82,5 +86,28 @@ public abstract class TileIncenseThornMixin {
         if (this.potionType == null) {
             this.setPotion(MobEffects.POISON);
         }
+    }
+
+    /**
+     * WorldPaleGarden.isNight(World) (confirmed via decompile) is purely a world-time
+     * check - (world.getWorldTime() % 24000) against a fixed range - with no concept
+     * of light level or sky visibility at all. TileIncenseThorn's own tick method
+     * assigns isAwake straight from that single call, so a thorn planted in a cave
+     * never runs its aura during the day no matter how dark it actually is down there.
+     * <p>
+     * This redirects that one call (isAwake's assignment, inside the tick method) to
+     * also treat "no sky light reaches this position" as night, when the "Awaken
+     * Underground During Day" toggle is on - the same simple canSeeSky check used
+     * elsewhere in vanilla for "is this actually underground".
+     */
+    @Redirect(method = {"update", "func_73660_a"}, at = @At(value = "INVOKE", target = "Lcom/sirsquidly/palebloom/common/world/WorldPaleGarden;isNight(Lnet/minecraft/world/World;)Z"))
+    private boolean dynamictreespalebloom$isNightOrUndergroundDay(World world) {
+        if (WorldPaleGarden.isNight(world)) {
+            return true;
+        }
+        if (!ForgeConfigHandler.paleLung.awakenUndergroundDuringDay) {
+            return false;
+        }
+        return !world.canSeeSky(this.pos);
     }
 }

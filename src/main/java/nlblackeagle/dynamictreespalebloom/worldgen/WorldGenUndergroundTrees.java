@@ -47,6 +47,18 @@ public class WorldGenUndergroundTrees implements IWorldGenerator {
         undergroundDataBase = dbase;
     }
 
+    // Lets FeatureGenCreakingHeart tell an underground-generated tree apart from a
+    // surface one - both go through the exact same Species/IPostGenFeature list (this
+    // generator just swaps in a cave-floor GroundFinder instead of the height map), so
+    // there's no other signal available inside postGeneration itself. ThreadLocal
+    // rather than a plain static flag since world generation can run population off
+    // the main thread.
+    private static final ThreadLocal<Boolean> GENERATING_UNDERGROUND = ThreadLocal.withInitial(() -> false);
+
+    public static boolean isGeneratingUnderground() {
+        return GENERATING_UNDERGROUND.get();
+    }
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
@@ -64,7 +76,12 @@ public class WorldGenUndergroundTrees implements IWorldGenerator {
         BiomeDataBase dbase = undergroundDataBase;
         SafeChunkBounds bounds = new SafeChunkBounds(world, new ChunkPos(chunkX, chunkZ));
 
-        treeGenerator.getCircleProvider().getPoissonDiscs(world, chunkX, 0, chunkZ).forEach(disc ->
-                treeGenerator.makeTree(world, dbase, disc, new UndergroundGroundFinder(), bounds));
+        GENERATING_UNDERGROUND.set(true);
+        try {
+            treeGenerator.getCircleProvider().getPoissonDiscs(world, chunkX, 0, chunkZ).forEach(disc ->
+                    treeGenerator.makeTree(world, dbase, disc, new UndergroundGroundFinder(), bounds));
+        } finally {
+            GENERATING_UNDERGROUND.set(false);
+        }
     }
 }

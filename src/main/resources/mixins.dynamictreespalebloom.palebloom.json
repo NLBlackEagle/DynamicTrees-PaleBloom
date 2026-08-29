@@ -6,24 +6,25 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "BlockCreakingHeartMixin",
-    "TileCreakingHeartMixin",
-    "JTPGBiomesMixin",
-    "BlockPaleHangingMossMixin",
     "BlockBranchFellingMixin",
+    "BlockCreakingHeartMixin",
     "BlockIncenseThornMixin",
     "BlockNightlightMixin",
-    "TileIncenseThornMixin",
+    "BlockPaleHangingMossMixin",
+    "BlockSuckerRootsMixin",
+    "CompatJEIMixin",
     "EntitySeedBombMixin",
-    "TilePollenheadMixin",
     "IncenseThornsNBTRecipeMixin",
     "ItemIncenseBushMixin",
-    "CompatJEIMixin",
+    "JTPGBiomesMixin",
+    "TileCreakingHeartMixin",
+    "TileIncenseThornMixin",
+    "TilePollenheadMixin",
     "TileResinBulbMixin",
-    "BlockSuckerRootsMixin"
+    "WorldPaleGardenMixin"
   ],
   "injectors": {
     "defaultRequire": 1,
-    "maxShiftBy": 10
+    "maxShiftBy": 5
   }
 }

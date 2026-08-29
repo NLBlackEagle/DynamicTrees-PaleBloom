@@ -23,7 +23,7 @@ import java.util.List;
 // the config option is enabled AND the seed belongs to one of our four
 // target families - our three Pale Bloom species, plus vanilla Dark Oak
 // specifically (not every Dynamic Trees species globally).
-@Mixin(value = Seed.class, remap = false)
+@Mixin(Seed.class)
 public class SeedMixin {
 
     private static final List<String> TARGET_FAMILIES = Arrays.asList(
@@ -33,7 +33,7 @@ public class SeedMixin {
             "dynamictrees:darkoak"
     );
 
-    @Inject(method = "hasForcePlant", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hasForcePlant", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$allowUndergroundPlanting(ItemStack seedStack, CallbackInfoReturnable<Boolean> cir) {
         if (!ForgeConfigHandler.featureToggles.enableRLCraftDregora) return;
         if (!ForgeConfigHandler.rlcraftDregora.enableUndergroundGrowth) return;

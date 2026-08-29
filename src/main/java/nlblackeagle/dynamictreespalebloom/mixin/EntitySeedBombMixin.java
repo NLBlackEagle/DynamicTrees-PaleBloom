@@ -39,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  * any plain player-thrown "palebloom:seed_bomb" item, which also goes through this
  * same class).
  */
-@Mixin(value = EntitySeedBomb.class, remap = false)
+@Mixin(EntitySeedBomb.class)
 public abstract class EntitySeedBombMixin {
 
     @Shadow
@@ -49,7 +49,7 @@ public abstract class EntitySeedBombMixin {
     // 4.0 in the decompiled source) - both should scale together, and ModifyConstant
     // without an ordinal replaces every occurrence of a matching constant in the
     // method, which is exactly what's wanted here.
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 4.0D))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 4.0D), remap = false)
     private double dynamictreespalebloom$scaleHorizontalRadius(double original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;
@@ -57,7 +57,7 @@ public abstract class EntitySeedBombMixin {
         return resolveRadius();
     }
 
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 2.0D))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 2.0D), remap = false)
     private double dynamictreespalebloom$scaleVerticalRadius(double original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;
@@ -66,7 +66,7 @@ public abstract class EntitySeedBombMixin {
         return resolveRadius() * 0.5D;
     }
 
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 16.0D))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 16.0D), remap = false)
     private double dynamictreespalebloom$scaleDistanceThreshold(double original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;
@@ -77,7 +77,7 @@ public abstract class EntitySeedBombMixin {
 
     // The actual Pale Moss spread radius (WorldGenMoss's own maxRadius constructor
     // arg) - see class javadoc. This is the fix that most likely matters visually.
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(intValue = 10))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(intValue = 10), remap = false)
     private int dynamictreespalebloom$scaleMossRadius(int original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;
@@ -90,7 +90,7 @@ public abstract class EntitySeedBombMixin {
 
     // The ambient TOWN_AURA-style particle scatter range (dX/dY/dZ jitter), purely
     // cosmetic but scaled too for visual consistency with everything else here.
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 6.0D))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 6.0D), remap = false)
     private double dynamictreespalebloom$scaleParticleSpreadRange(double original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;
@@ -98,7 +98,7 @@ public abstract class EntitySeedBombMixin {
         return resolveRadius() * 2.0D;
     }
 
-    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 3.0D))
+    @ModifyConstant(method = "explodeUnderwater", constant = @Constant(doubleValue = 3.0D), remap = false)
     private double dynamictreespalebloom$scaleParticleSpreadOffset(double original) {
         if (!ForgeConfigHandler.featureToggles.enableSeedBomb) {
             return original;

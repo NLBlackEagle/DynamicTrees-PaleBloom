@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = BlockCreakingHeart.class, remap = false)
+@Mixin(BlockCreakingHeart.class)
 public class BlockCreakingHeartMixin {
 
-    @Inject(method = "blockSupportsHeart", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "blockSupportsHeart", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$supportDynamicPaleOak(Block block, CallbackInfoReturnable<Boolean> cir) {
         if (block == ModContent.paleOakBranchBlock
                 || (ModContent.paleOakBranchBlock instanceof BlockBranchThick

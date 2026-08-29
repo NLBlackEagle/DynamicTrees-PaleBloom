@@ -5,10 +5,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(value = JTPGBiomes.class, remap = false)
+@Mixin(JTPGBiomes.class)
 public class JTPGBiomesMixin {
 
-    @ModifyConstant(method = "registerBiomes", constant = @Constant(intValue = 0, ordinal = 0))
+    @ModifyConstant(method = "registerBiomes", constant = @Constant(intValue = 0, ordinal = 0), remap = false)
     private static int dynamictreespalebloom$increasePaleGardenWeight(int original) {
         return 10;
     }

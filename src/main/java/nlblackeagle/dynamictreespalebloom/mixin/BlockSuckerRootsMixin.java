@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * leaving the movement slowdown completely untouched either way - this only ever
  * affects the damage, never whether entities get slowed down walking through it.
  */
-@Mixin(value = BlockSuckerRoots.class, remap = false)
+@Mixin(BlockSuckerRoots.class)
 public class BlockSuckerRootsMixin {
 
     // target is Entity#attackEntityFrom(DamageSource, float) - func_70097_a here since

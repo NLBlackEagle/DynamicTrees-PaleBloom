@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 // potentially the trunk) instead, that check always fails silently, disabling
 // the moss's own ambient rustling sound. Same pattern as the Creaking Heart
 // support check from earlier in this project.
-@Mixin(value = BlockPaleHangingMoss.class, remap = false)
+@Mixin(BlockPaleHangingMoss.class)
 public class BlockPaleHangingMossMixin {
 
-    @Inject(method = "blockCausesAmbience", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "blockCausesAmbience", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$recognizeDynamicTrunkAndLeaves(Block block, CallbackInfoReturnable<Boolean> cir) {
         boolean isOurLeaves = LeavesPaging.getLeavesMapForModId(DynamicTreesPaleBloom.MODID).containsValue(block);
 

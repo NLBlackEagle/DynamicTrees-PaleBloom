@@ -48,7 +48,7 @@ import java.util.Random;
  * redirecting the field read itself, so a successful nightly charge is worth more
  * without touching the search radius, interval, or the daytime harvest amount.
  */
-@Mixin(value = TileResinBulb.class, remap = false)
+@Mixin(TileResinBulb.class)
 public abstract class TileResinBulbMixin extends TileEntity {
 
     @Shadow
@@ -63,7 +63,7 @@ public abstract class TileResinBulbMixin extends TileEntity {
     @Shadow
     public int bulbCheckDistanceY;
 
-    @Inject(method = "tryActiveHeartHarvest", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tryActiveHeartHarvest", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$optimizeScan(World world, BlockPos pos, CallbackInfo ci) {
         if (!ForgeConfigHandler.miscellaneous.optimizeResinBulbHeartSearch) {
             return;
@@ -79,7 +79,7 @@ public abstract class TileResinBulbMixin extends TileEntity {
         }
     }
 
-    @ModifyConstant(method = "tryActiveHeartHarvest", constant = @Constant(intValue = 10))
+    @ModifyConstant(method = "tryActiveHeartHarvest", constant = @Constant(intValue = 10), remap = false)
     private int dynamictreespalebloom$shrinkRadius(int original) {
         if (!ForgeConfigHandler.miscellaneous.optimizeResinBulbHeartSearch) {
             return original;
@@ -90,12 +90,12 @@ public abstract class TileResinBulbMixin extends TileEntity {
     // Redirects the field read itself (rather than wrapping setStoredResin, whose
     // argument is already the post-min()-clamped total) so the multiplier scales just
     // the reap amount, leaving the max-resin clamp it feeds into untouched.
-    @Redirect(method = "tryActiveHeartHarvest", at = @At(value = "FIELD", target = "Lcom/sirsquidly/palebloom/config/ConfigCache;rsnBlb_creakingHeartResinReap:I"))
+    @Redirect(method = "tryActiveHeartHarvest", at = @At(value = "FIELD", target = "Lcom/sirsquidly/palebloom/config/ConfigCache;rsnBlb_creakingHeartResinReap:I"), remap = false)
     private int dynamictreespalebloom$buffCreakingHeartResinReap() {
         return (int) Math.round(ConfigCache.rsnBlb_creakingHeartResinReap * ForgeConfigHandler.miscellaneous.creakingHeartResinChargeMultiplier);
     }
 
-    @ModifyConstant(method = {"update", "func_73660_a"}, constant = @Constant(longValue = 300L))
+    @ModifyConstant(method = {"update"}, constant = @Constant(longValue = 300L))
     private long dynamictreespalebloom$slowInterval(long original) {
         if (!ForgeConfigHandler.miscellaneous.optimizeResinBulbHeartSearch) {
             return original;
@@ -103,7 +103,7 @@ public abstract class TileResinBulbMixin extends TileEntity {
         return 600L;
     }
 
-    @Inject(method = "tryResinHarvest", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tryResinHarvest", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$fixSearchAxisBug(World world, BlockPos pos, Random random, CallbackInfo ci) {
         if (!ForgeConfigHandler.miscellaneous.fixResinBulbSearchAreaBug) {
             return;

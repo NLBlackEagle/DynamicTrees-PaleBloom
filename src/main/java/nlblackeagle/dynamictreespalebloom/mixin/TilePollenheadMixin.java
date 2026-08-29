@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Lung instead of Poison), both, or neither (in which case the original native method
  * runs completely untouched).
  */
-@Mixin(value = TilePollenhead.class, remap = false)
+@Mixin(TilePollenhead.class)
 public abstract class TilePollenheadMixin extends TileEntity {
 
     // world/pos are inherited from vanilla TileEntity - they're NOT declared in
@@ -58,7 +58,7 @@ public abstract class TilePollenheadMixin extends TileEntity {
     @Shadow
     public int poisonDistance;
 
-    @Inject(method = "poisonNearbyEntities", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "poisonNearbyEntities", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$fixAndReplace(CallbackInfo ci) {
         boolean swapPotion = ForgeConfigHandler.featureToggles.enablePaleLung
                 && ForgeConfigHandler.paleLung.replacePollenheadAndIncenseThornsPoison

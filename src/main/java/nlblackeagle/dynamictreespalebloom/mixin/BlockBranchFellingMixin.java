@@ -27,10 +27,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // point BEFORE any destruction happens (while the real blocks, with their
 // real NATURAL flag, are still intact), and drops the bonus item ourselves
 // if a natural heart is found - independent of DT's own drop list entirely.
-@Mixin(value = BlockBranch.class, remap = false)
+@Mixin(BlockBranch.class)
 public class BlockBranchFellingMixin {
 
-    @Inject(method = "futureBreak", at = @At("HEAD"))
+    @Inject(method = "futureBreak", at = @At("HEAD"), remap = false)
     private void dynamictreespalebloom$dropAmberOnFelling(IBlockState state, World world, BlockPos cutPos, EntityLivingBase entity, CallbackInfo ci) {
         if (world.isRemote) return;
 

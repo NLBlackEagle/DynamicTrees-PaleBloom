@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * {@code setPotion(MobEffects.POISON)}, or this addon's own Seed Bomb flora scatter
  * calling {@code setPotion(...)} directly.
  */
-@Mixin(value = TileIncenseThorn.class, remap = false)
+@Mixin(TileIncenseThorn.class)
 public abstract class TileIncenseThornMixin extends TileEntity {
 
     @Shadow
@@ -44,7 +44,7 @@ public abstract class TileIncenseThornMixin extends TileEntity {
     @Shadow
     public abstract void setPotion(Potion potion);
 
-    @Inject(method = "setPotion", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setPotion", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$swapPoisonForPaleLung(Potion potion, CallbackInfo ci) {
         if (!ForgeConfigHandler.featureToggles.enablePaleLung) {
             return;
@@ -77,7 +77,7 @@ public abstract class TileIncenseThornMixin extends TileEntity {
      * tries to run its aura - routed through setPotion() above so the existing Pale
      * Lung swap (and any future logic added there) still applies on top of it.
      */
-    @Inject(method = "effectNearbyEntities", at = @At("HEAD"))
+    @Inject(method = "effectNearbyEntities", at = @At("HEAD"), remap = false)
     private void dynamictreespalebloom$defaultToPoisonWhenUnset(CallbackInfo ci) {
         if (!ForgeConfigHandler.miscellaneous.defaultUnsetIncenseThornsToPoison) {
             return;

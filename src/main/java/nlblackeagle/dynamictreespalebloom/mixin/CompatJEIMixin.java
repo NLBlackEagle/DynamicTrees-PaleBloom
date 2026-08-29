@@ -20,25 +20,25 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
  * text entirely via "dregora.<original key>" entries instead of needing to keep
  * shadowing Pale Bloom's exact original key names.
  */
-@Mixin(value = CompatJEI.class, remap = false)
+@Mixin(CompatJEI.class)
 public class CompatJEIMixin {
 
-    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.incense_thorns.desc"))
+    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.incense_thorns.desc"), remap = false)
     private String dynamictreespalebloom$dregoraIncenseThorns(String original) {
         return dregoraKey(original);
     }
 
-    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.pale_oak_hollow.desc"))
+    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.pale_oak_hollow.desc"), remap = false)
     private String dynamictreespalebloom$dregoraPaleOakHollow(String original) {
         return dregoraKey(original);
     }
 
-    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.pollenhead.desc"))
+    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.pollenhead.desc"), remap = false)
     private String dynamictreespalebloom$dregoraPollenhead(String original) {
         return dregoraKey(original);
     }
 
-    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.resin_bulb.desc"))
+    @ModifyConstant(method = "addInformation", constant = @Constant(stringValue = "jei.palebloom.resin_bulb.desc"), remap = false)
     private String dynamictreespalebloom$dregoraResinBulb(String original) {
         return dregoraKey(original);
     }

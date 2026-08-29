@@ -28,10 +28,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * guards preformSwapping itself: bail out before the crashing lookup whenever the
  * block actually sitting at pos isn't a Nightlight any more.
  */
-@Mixin(value = BlockNightlight.class, remap = false)
+@Mixin(BlockNightlight.class)
 public abstract class BlockNightlightMixin {
 
-    @Inject(method = "preformSwapping", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "preformSwapping", at = @At("HEAD"), cancellable = true, remap = false)
     private void dynamictreespalebloom$guardMissingBlock(World world, BlockPos pos, boolean removed, CallbackInfo ci) {
         if (!ForgeConfigHandler.miscellaneous.fixNightlightRemovalCrash) return;
 

@@ -46,7 +46,3 @@ public class  DynamicTreesPaleBloom {
 
 
 
-//todo: make mixins in eaglemixins that makes SRP not adapt versus pale lung.
-
-
-

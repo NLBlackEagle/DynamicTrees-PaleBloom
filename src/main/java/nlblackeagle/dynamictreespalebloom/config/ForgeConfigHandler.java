@@ -248,6 +248,20 @@ public class ForgeConfigHandler {
         @Config.Name("Pale Lung Entity Damage List Mode")
         public EntityListMode entityDamageListMode = EntityListMode.WHITELIST;
 
+        @Config.Comment("Any Palebloom weapon (an ItemSword registered under the \"palebloom\" domain - currently just the Cultivar Sword, but this picks up any future Palebloom weapon automatically) inflicts Pale Lung on whatever it hits in melee, alongside its normal damage. Still fully subject to \"Pale Lung Entity List\" and Respiration immunity like every other Pale Lung source.")
+        @Config.Name("Weapons Inflict Pale Lung")
+        public boolean weaponsInflictPaleLung = true;
+
+        @Config.Comment("Duration (in ticks, 20 = 1 second) of the Pale Lung effect applied by a Palebloom weapon hit.")
+        @Config.Name("Weapon Pale Lung Duration")
+        @Config.RangeInt(min = 1, max = 12000)
+        public int weaponPaleLungDuration = 200;
+
+        @Config.Comment("Amplifier of the Pale Lung effect applied by a Palebloom weapon hit. 0 = level I.")
+        @Config.Name("Weapon Pale Lung Amplifier")
+        @Config.RangeInt(min = 0, max = 4)
+        public int weaponPaleLungAmplifier = 0;
+
         public enum EntityListMode {
             WHITELIST, BLACKLIST
         }

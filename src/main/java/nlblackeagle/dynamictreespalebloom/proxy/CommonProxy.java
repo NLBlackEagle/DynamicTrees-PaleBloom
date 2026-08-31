@@ -6,6 +6,7 @@ import nlblackeagle.dynamictreespalebloom.event.CreakingHeartValidityHandler;
 import nlblackeagle.dynamictreespalebloom.event.PaleLungDeathHandler;
 import nlblackeagle.dynamictreespalebloom.event.PaleLungImmunityHandler;
 import nlblackeagle.dynamictreespalebloom.event.PaleLungSeedBombTickHandler;
+import nlblackeagle.dynamictreespalebloom.event.PaleLungWeaponHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowAggressionHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowDeathHandler;
 import nlblackeagle.dynamictreespalebloom.event.ReapingWillowDropsHandler;
@@ -30,6 +31,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ReapingWillowDropsHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungDeathHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungImmunityHandler());
+        MinecraftForge.EVENT_BUS.register(new PaleLungWeaponHandler());
         MinecraftForge.EVENT_BUS.register(new PaleLungSeedBombTickHandler());
         MinecraftForge.TERRAIN_GEN_BUS.register(new TreeGenCancelPaleGardenEventHandler());
         GameRegistry.registerWorldGenerator(new WorldGenPalePetals(), 5);

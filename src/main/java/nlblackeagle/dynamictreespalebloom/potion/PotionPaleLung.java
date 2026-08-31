@@ -29,6 +29,13 @@ public class PotionPaleLung extends Potion {
     // Fixed UUID so the modifier can be reliably added/removed, same convention as vanilla's potions.
     private static final String MOVEMENT_SPEED_MODIFIER_UUID = "d3942663-9ac3-4289-a0df-5b26758b8350";
 
+    // Deliberately NOT DamageSource.MAGIC: mobs that build up resistance to a damage type by its
+    // type string (e.g. Scape and Run: Parasites' adaptation system) would otherwise lump Pale Lung
+    // in with every other source of vanilla magic damage and vice versa. A unique type string keeps
+    // it a distinct, individually-targetable damage type while still behaving like magic damage.
+    public static final DamageSource PALE_LUNG_DAMAGE =
+            new DamageSource(DynamicTreesPaleBloom.MODID + ".pale_lung").setDamageBypassesArmor().setMagicDamage();
+
     public PotionPaleLung() {
         // isBadEffect = true, liquid/particle colour = a pale, sickly grey-green.
         super(true, 0xB9C2B4);
@@ -71,7 +78,7 @@ public class PotionPaleLung extends Potion {
 
         // Identical to vanilla Poison: damages the entity, but can never bring it below 1 HP.
         if (entity.getHealth() > 1.0F) {
-            entity.attackEntityFrom(DamageSource.MAGIC, 1.0F);
+            entity.attackEntityFrom(PALE_LUNG_DAMAGE, 1.0F);
         }
     }
 

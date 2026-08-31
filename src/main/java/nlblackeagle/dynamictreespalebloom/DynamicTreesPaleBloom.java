@@ -45,12 +45,8 @@ public class  DynamicTreesPaleBloom {
 }
 
 
-//todo: Talk with others on what to do with: (With the team and I guess here too)
-// Pollenhead, natural growth? Make it always spew stuff around from a "Natural growth resin bulb" that has unlimited resin in it but when harvested poofs into a cloud of particles (unless harvested with a gardencrafted hoe perhaps? (nice progression)
-// Incense thorns, natural growth with poison potion, can be harvested using gardencraft hoe.
-// NightLight, natural growth, gives off light can hang from cave ceilings?
 
-//todo: Test pale lung dmg effect to SRP
+//todo: make mixins in eaglemixins that makes SRP not adapt versus pale lung.
 
 
 

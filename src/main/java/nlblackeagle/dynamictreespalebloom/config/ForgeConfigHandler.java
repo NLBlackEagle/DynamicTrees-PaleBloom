@@ -381,6 +381,10 @@ public class ForgeConfigHandler {
         @Config.Comment("Fixes a real Pale Bloom crash: Nightlight hangs from a ceiling (its canBlockStay check requires solid ground, or Pale Hanging Moss, directly above it), and BlockNightlight#updateTick can legitimately break it into air right there if that support is gone - but then unconditionally calls preformSwapping() anyway regardless, which crashes the whole world tick trying to read a property off the now-air block. This makes preformSwapping bail out harmlessly instead whenever the block it's called on turns out not to actually be a Nightlight any more.")
         @Config.Name("Fix Nightlight Removal Crash")
         public boolean fixNightlightRemovalCrash = true;
+
+        @Config.Comment("Fixes a real Pale Bloom crash: the Pale Moss Cloak grafting recipes (and any other recipe) have no item_exists condition, so when the Pale Moss Cloak is disabled in Pale Bloom's own config they still get registered with an output item that was never registered. JEI then spams \"Item has no registry name\" errors, and Forge refuses to load any world (\"produces unregistered item null\"). This removes every recipe whose output item isn't registered.")
+        @Config.Name("Fix Unregistered Recipe Output Crash")
+        public boolean fixUnregisteredRecipeOutputCrash = true;
     }
 
     @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience.")

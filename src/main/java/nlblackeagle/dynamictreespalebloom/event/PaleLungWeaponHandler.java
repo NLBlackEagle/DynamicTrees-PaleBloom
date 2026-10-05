@@ -48,7 +48,7 @@ public class PaleLungWeaponHandler {
         }
 
         if (held.getItem().getRegistryName() == null
-                || !"palebloom".equals(held.getItem().getRegistryName().getResourceDomain())) {
+                || !"palebloom".equals(held.getItem().getRegistryName().getNamespace())) {
             return;
         }
 

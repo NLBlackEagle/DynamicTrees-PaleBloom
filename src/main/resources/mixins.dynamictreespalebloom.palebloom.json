@@ -15,13 +15,15 @@
     "CompatJEIMixin",
     "EntitySeedBombMixin",
     "IncenseThornsNBTRecipeMixin",
-    "ItemIncenseBushMixin",
     "JTPGBiomesMixin",
     "TileCreakingHeartMixin",
     "TileIncenseThornMixin",
     "TilePollenheadMixin",
     "TileResinBulbMixin",
     "WorldPaleGardenMixin"
+  ],
+  "client": [
+    "ItemIncenseBushMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

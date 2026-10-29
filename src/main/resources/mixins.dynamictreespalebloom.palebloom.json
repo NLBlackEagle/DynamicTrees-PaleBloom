@@ -8,6 +8,7 @@
   "mixins": [
     "BlockBranchFellingMixin",
     "BlockCreakingHeartMixin",
+    "BlockDoublePalePlantMixin",
     "BlockIncenseThornMixin",
     "BlockNightlightMixin",
     "BlockPaleHangingMossMixin",

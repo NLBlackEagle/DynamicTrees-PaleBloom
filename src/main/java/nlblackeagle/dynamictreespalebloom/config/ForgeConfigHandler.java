@@ -385,6 +385,10 @@ public class ForgeConfigHandler {
         @Config.Comment("Fixes a real Pale Bloom crash: the Pale Moss Cloak grafting recipes (and any other recipe) have no item_exists condition, so when the Pale Moss Cloak is disabled in Pale Bloom's own config they still get registered with an output item that was never registered. JEI then spams \"Item has no registry name\" errors, and Forge refuses to load any world (\"produces unregistered item null\"). This removes every recipe whose output item isn't registered.")
         @Config.Name("Fix Unregistered Recipe Output Crash")
         public boolean fixUnregisteredRecipeOutputCrash = true;
+
+        @Config.Comment("Fixes a real Pale Bloom crash: Pale Plant (Eyeblossom Bush / Stiffpod / Epiales) only has 3 types, but its getStateFromMeta reads the type from 2 bits of metadata without a bounds check, so any metadata value of 3, 7, 11 or 15 crashes. The block never stores those itself, but anything that checks every metadata value does - most notably OptiFine, which crashes the client as soon as a shader pack is selected. This makes those invalid values fall back to the first type instead of crashing.")
+        @Config.Name("Fix Pale Plant Metadata Crash")
+        public boolean fixDoublePalePlantMetaCrash = true;
     }
 
     @Config.Comment("Options specifically for replicating the RLCraft Dregora modpack experience.")
